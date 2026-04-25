@@ -1,0 +1,72 @@
+# 04 Reports + ALV
+
+## Concept (2–3 lines)
+- Reports = ABAP programs for **data extraction + display** (classic: selection screen + output).
+- ALV = standard SAP list UI for **sorting/filtering/layout/export** with minimal code.
+
+## Interview-ready paragraph (say this)
+In ABAP, reports are typically built around a selection screen, a single efficient data read, and a clean output. For output, ALV is the standard choice because it provides sorting, filtering, totals, layout variants, and export with minimal custom UI work. When performance matters, I focus on pushing filtering and aggregation to the database or CDS, selecting only required fields, and avoiding building massive internal tables unnecessarily. For large datasets on HANA, I mention options like ALV with IDA or analytics-style CDS approaches where appropriate.
+
+## Interview Questions (Beginner → Advanced)
+### Beginner
+- Q: What is a report?
+- Q: What is ALV and why used?
+- Q: Classical list vs ALV?
+
+### Intermediate
+- Q: REUSE_ALV_* vs SALV?
+- Q: What is field catalog?
+- Q: How do you add hotspot / user command?
+
+### Advanced
+- Q: ALV performance for large data?
+- Q: When to use ALV with IDA?
+- Q: How to handle authorization + large volumes cleanly?
+
+## Best Answers (1–3 lines)
+- A: ALV gives **standard UI features** without custom screens (sort, filter, totals, export).
+- A: Classic FM ALV is older/procedural; **SALV** is OO and simpler for basic grids.
+- A: For huge data, pushdown and use **ALV with IDA** (HANA) or paging strategy.
+
+## Code examples (minimal patterns)
+
+### SALV quick display (fast interview pattern)
+```abap
+cl_salv_table=>factory(
+  IMPORTING r_salv_table = DATA(lo_alv)
+  CHANGING  t_table      = it_out ).
+lo_alv->display( ).
+```
+
+## Common mistakes / traps
+- Selecting too much data then ALV (slow) instead of filtering in DB/CDS.
+- Over-customizing ALV when standard features already exist.
+
+## Optimization tips (DO / DON’T)
+- **DO**: minimize fields; aggregate/filter in DB/CDS.
+- **DO**: consider **IDA** for very large datasets on HANA.
+- **DON’T**: build huge internal tables unnecessarily.
+
+## Scenario-based questions (strong answers)
+- Q: “ALV takes 2 minutes for 500k rows. Fix?”  
+  A: Reduce rows/fields, push logic to **CDS**, add indexes, consider **IDA/paging**.
+
+## Drawbacks / limitations
+- Classic ALV function modules can get messy for complex events/customization.
+- IDA requires HANA capabilities and suitable data model.
+
+## Advanced improvements / modern alternatives
+- Prefer **Fiori elements (CDS + OData + RAP)** for modern UI-driven apps.
+- Use **CDS Analytical queries** for reporting style scenarios.
+
+## MEMORY HACK
+- **1-line**: “Reports = selection + data; ALV = standard grid features with minimal code.”
+- **Keywords**: Report, SelectionScreen, SALV, FieldCatalog, IDA
+- **Quick compare**
+
+| Option | Best for |
+|---|---|
+| Classical list | tiny output, quick debug |
+| SALV | fastest ALV setup |
+| IDA | huge data on HANA |
+

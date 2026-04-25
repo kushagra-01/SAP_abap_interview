@@ -1,0 +1,55 @@
+# SAP ABAP Interview Preparation Kit (S/4HANA-leaning)
+
+**Goal**: Memorize + understand these patterns so you can answer ABAP interviews confidently even with minimal SAP project exposure.
+
+## How to use (fast)
+- **Read** each topic’s **MEMORY HACK** first.
+- **Drill** the **Beginner → Advanced Q&A** (answers are intentionally 1–3 lines).
+- **Practice** only the **code patterns** (small + reusable).
+
+## Recommended order (80/20)
+1. [01_ABAP_Basics](01_ABAP_Basics/README.md)
+2. [02_Internal_Tables](02_Internal_Tables/README.md)
+3. [03_DDIC](03_DDIC/README.md)
+4. [05_Modularization](05_Modularization/README.md)
+5. [07_OOP_ABAP](07_OOP_ABAP/README.md)
+6. [10_Performance_Optimization](10_Performance_Optimization/README.md)
+7. [11_SAP_HANA](11_SAP_HANA/README.md)
+8. [12_CDS_Views](12_CDS_Views/README.md)
+9. [14_OData_Gateway](14_OData_Gateway/README.md)
+10. [13_RAP](13_RAP/README.md)
+10. Then the rest as needed (ALV/Forms/Interfaces/Enhancements/S/4 concepts/Real-time).
+
+## Index
+- 00_Starter
+  - [00_Study_Guide](00_Study_Guide/README.md)
+  - [00_Interview_Quickfire](00_Interview_Quickfire/README.md)
+  - [00_System_Design_For_ABAP](00_System_Design_For_ABAP/README.md)
+  - [00_SAP_Focused_Experience_Narrative](00_SAP_Focused_Experience_Narrative/README.md)
+- 01–16 Topics
+  - [01_ABAP_Basics](01_ABAP_Basics/README.md)
+  - [02_Internal_Tables](02_Internal_Tables/README.md)
+  - [03_DDIC](03_DDIC/README.md)
+  - [04_Reports_ALV](04_Reports_ALV/README.md)
+  - [05_Modularization](05_Modularization/README.md)
+  - [06_Enhancements](06_Enhancements/README.md)
+  - [07_OOP_ABAP](07_OOP_ABAP/README.md)
+  - [08_Forms](08_Forms/README.md)
+  - [09_Interfaces](09_Interfaces/README.md)
+  - [10_Performance_Optimization](10_Performance_Optimization/README.md)
+  - [11_SAP_HANA](11_SAP_HANA/README.md)
+  - [12_CDS_Views](12_CDS_Views/README.md)
+  - [13_RAP](13_RAP/README.md)
+  - [14_OData_Gateway](14_OData_Gateway/README.md)
+  - [15_S4_HANA_Concepts](15_S4_HANA_Concepts/README.md)
+  - [16_Real_Time_Scenarios](16_Real_Time_Scenarios/README.md)
+
+## Interview rule of thumb
+- **Say the “why” first** (business + performance), then **the “how”** (ABAP pattern), then **a pitfall** (what breaks in production).
+
+## Cross-links (study smart)
+- Internal tables + lookup patterns → [02_Internal_Tables](02_Internal_Tables/README.md) + [10_Performance_Optimization](10_Performance_Optimization/README.md)
+- Pushdown story → [11_SAP_HANA](11_SAP_HANA/README.md) → [12_CDS_Views](12_CDS_Views/README.md) → [13_RAP](13_RAP/README.md) → [14_OData_Gateway](14_OData_Gateway/README.md)
+- Upgrade-safe extensibility → [06_Enhancements](06_Enhancements/README.md) + [15_S4_HANA_Concepts](15_S4_HANA_Concepts/README.md)
+- Reliability patterns (locks/queues/idempotency) → [09_Interfaces](09_Interfaces/README.md) + [16_Real_Time_Scenarios](16_Real_Time_Scenarios/README.md)
+
