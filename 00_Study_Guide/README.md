@@ -1,5 +1,8 @@
 # 00 Study Guide (Memorize Like a Dev)
 
+## Interview-ready paragraph (say this)
+I’ve prepared for SAP ABAP interviews by building strong fundamentals and then drilling the same patterns repeatedly until they become natural to explain. My approach is to learn each topic through a short definition and key trade-offs, practice the code patterns by typing them, and then test myself with quickfire questions until I can answer confidently under time pressure. I also prioritize real-world concerns like performance, LUW consistency, locking, and integration reliability, because those are the areas interviewers use to differentiate candidates beyond syntax.
+
 ## 7-day crash plan (repeat daily)
 - **30 min**: MEMORY HACKs only (all topics)
 - **45 min**: Q&A drilling (say answers out loud)

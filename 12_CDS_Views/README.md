@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 CDS views are the modern way to model data in S/4 because they combine SQL logic with semantic metadata and annotations, so the same model can be reused across reports, services, and Fiori. I use CDS to push joins, filters, and aggregations down to the database, which reduces ABAP-side loops and data transfer. I’m careful with associations and cardinality so I don’t introduce duplicates or heavy joins accidentally, and I plan authorization early using DCL or access control annotations. In practice I prefer a layered approach: interface view for stable semantics, then a projection/consumption view for specific use cases like RAP or UI.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask “associations vs joins,” I explain associations are modeled relationships that enable navigation and reuse, while joins directly combine data at query time. Associations are great for semantic modeling, but you still need to be careful about cardinality and how they are consumed, because that’s where duplicates and unexpected heavy joins can appear.
+
+If they ask about security, I explain that CDS can enforce authorization consistently through DCL and access control checks, which is critical when the same view is reused for OData and UI. I treat authorization as part of the model, not something added as an afterthought in a report.
+
+If they ask about maintainability, I explain the layered approach: stable interface views for core semantics, then projections/consumption views for specific apps. This prevents “one mega view” from becoming unmaintainable and keeps changes safer when new requirements appear.
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: What is CDS and why used?

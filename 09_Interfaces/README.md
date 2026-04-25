@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 In SAP integrations, I think in terms of the right communication style and reliability guarantees. For high-volume, decoupled integration I use IDocs because they work asynchronously and handle retries and monitoring well, while for direct request-response I use RFC or OData depending on the consumer. For business operations, I prefer BAPIs or released APIs because they provide stable structures and standard return messages. The production-grade topics I highlight are idempotency and ordering: retries are normal, so we must prevent duplicate postings using message IDs or business keys, and when sequence matters we use queues like qRFC or ordered processing by key. Finally, monitoring and logging are essential so support teams can diagnose failures quickly.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask “when IDoc vs RFC vs OData,” I answer by interaction style and coupling. IDoc is best for asynchronous, decoupled, high-volume integration where some delay is acceptable, while RFC/OData fits interactive request-response scenarios. For business operations inside SAP, I prefer BAPIs or released APIs because they define stable contracts and standardized return messages.
+
+If they ask about reliability, I explain that failures and retries are normal in distributed systems. So I design idempotent processing by storing a message ID or a unique business key so a retry doesn’t create duplicates, and I add application logs so support can trace what happened.
+
+If they ask about ordering and throughput, I mention queueing strategies like qRFC when sequence matters, and batching to avoid chatty interfaces. The goal is predictable behavior under load, not just “it works once.”
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: What is an IDoc?

@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 RAP is SAP’s modern programming model for building transactional business services in a consistent, upgrade-friendly way. I start with a CDS-based data model, then define behavior for create/update/delete along with validations, determinations, and actions, and finally expose the service for consumption—typically as OData for Fiori or integrations. For straightforward CRUD I choose managed RAP so the framework handles persistence, and for complex legacy save logic I choose unmanaged RAP while still keeping a clean service contract. I also pay attention to concurrency, meaningful error reporting, and performance by pushing heavy joins and filtering down to CDS.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask “managed vs unmanaged,” I explain it as who owns persistence. Managed RAP is ideal when the persistence is straightforward and we want the framework to handle save and standard operations, while unmanaged RAP is used when we already have complex legacy save logic and need to implement the persistence while still exposing a modern service contract.
+
+If they ask about behavior elements, I explain validations prevent bad data, determinations fill or derive fields automatically, and actions execute explicit business operations like “confirm” or “approve.” I also mention draft support for UI-driven edit flows where data is staged until final save.
+
+If they ask about real production readiness, I explain concurrency and error handling: meaningful failed keys, consistent messages, and locks/LUW strategy so updates don’t conflict. I also keep performance in mind by pushing heavy joins/filters to CDS and keeping behavior logic focused.
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: What is RAP in SAP?

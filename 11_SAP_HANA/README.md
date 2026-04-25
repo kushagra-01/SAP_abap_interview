@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 SAP HANA is an in-memory, column-oriented database that’s especially strong for scanning, aggregations, and join-heavy workloads, which is why S/4 emphasizes pushdown. When I work on HANA-based systems, I try to keep large joins and aggregations close to the database using CDS or efficient Open SQL, instead of moving huge datasets to ABAP and looping. I also highlight that HANA doesn’t remove the need for good modeling: filters, correct join conditions, and reasonable result sizes still matter. My rule is to push down what’s data-intensive and keep ABAP focused on orchestration, validations, and business rules that remain clearer on the application layer.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask “column store vs row store,” I explain column store is optimized for scanning a few columns across many rows and for aggregations, which is typical in analytics and many reporting scenarios. Row store is better for certain transactional access patterns, but in HANA the column store is a major driver for performance in analytical workloads.
+
+If they ask about pushdown boundaries, I explain not everything should be pushed down. Heavy joins, filters, and group-bys belong in the database, but complex business rules that change frequently or need unit testing often remain better in ABAP, using clean service-layer orchestration.
+
+If they ask about tuning a slow join-heavy report, I explain the sequence: reduce result size with filters, select only required fields, move join/aggregate to CDS, verify join conditions, and then validate with SQL trace. The aim is fewer roundtrips and smaller data transfer, not “faster loops.”
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: What is SAP HANA?

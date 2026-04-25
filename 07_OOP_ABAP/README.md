@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 In ABAP I prefer object-oriented design when code needs to be reusable, testable, and easy to extend. I model core logic in service classes, expose contracts through interfaces, and use polymorphism so the caller can depend on behavior instead of concrete implementations. I avoid deep inheritance unless it’s a true “is-a” relationship, and I usually favor composition and dependency injection to keep coupling low. This approach makes unit testing easier and keeps reports and UI layers thin and focused on orchestration.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask “interface vs abstract class,” I say interfaces are for contracts and multiple implementations, while abstract classes are useful when I need shared base behavior plus extension points. In ABAP I still prefer interfaces plus composition for flexibility, and I use inheritance only when the domain relationship is truly “is-a.”
+
+If they ask about dependency injection, I explain it as passing dependencies into the constructor so the class doesn’t create its own collaborators. That reduces coupling and makes unit testing simple because I can inject a test double instead of calling real DB or external services.
+
+If they ask how I apply OOP in real SAP work, I say I keep reports thin and move logic into service classes, keep DB access behind a dedicated layer, and return clear exceptions/messages. This structure prevents global state issues and improves maintainability during changes and upgrades.
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: Class vs object?

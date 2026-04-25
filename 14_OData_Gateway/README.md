@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 OData is the standard REST-based way to expose SAP data and business operations as entities that clients can query using options like `$filter`, `$select`, and `$expand`. In interviews I usually highlight two real-world priorities: performance and security. Performance comes from keeping payloads small, supporting filtering properly, and pushing joins and calculations down to CDS instead of assembling big datasets in ABAP. Security comes from enforcing authorization consistently so the service never returns fields or records a user isn’t allowed to see. For new S/4 development, I prefer exposing services via RAP where possible, because it reduces boilerplate and aligns with modern patterns compared to classic SEGW-only implementations.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask how I tune OData performance, I answer in terms of payload and pushdown. I ensure filters are applied early, return only required fields, and avoid building deep entity graphs in ABAP when `$expand` plus CDS modeling can do it efficiently. I also plan paging and avoid returning huge lists by default.
+
+If they ask about errors, I explain I return consistent error messages and status codes, and I log enough context so issues are traceable in production. For business validation failures, I prefer clear, user-facing messages rather than generic dumps.
+
+If they ask about SEGW vs RAP exposure, I explain SEGW can work but often involves more manual coding for CRUD and query options, while RAP gives a standardized behavior and transaction model and typically reduces boilerplate. For modern S/4 projects, RAP-aligned services are usually the recommended direction.
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: What is OData?

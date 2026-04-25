@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 Modularization in ABAP means structuring logic into reusable units so the code is maintainable and consistent across programs. Historically SAP used FORMs and function modules, but for modern development I prefer classes and methods because they support clear responsibilities, interfaces, and unit testing. I still use function modules when SAP expects them—like certain framework hooks, RFC-enabled APIs, or update/task patterns—but I keep business logic out of global function group state. A key interview point is LUW safety: reusable modules should not commit unexpectedly unless that behavior is explicitly part of the contract.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask when to use function modules today, I say I use them where SAP frameworks require them or where remote calls are needed, such as RFC-enabled APIs or standard BAPI patterns. I also mention update/background tasks as classic SAP mechanisms that still rely on function modules in many systems.
+
+If they ask about avoiding global state, I explain function groups often carry global data, which can create hidden dependencies. I keep state local where possible, pass data explicitly, and move business logic into classes so dependencies are visible and testable.
+
+If they ask about code ownership and testability, I say methods with interfaces allow mocking and ABAP Unit tests. FORMs and includes can work for legacy reports, but for new development I prefer OO modularization so future changes remain safe and predictable.
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: What is modularization in ABAP?

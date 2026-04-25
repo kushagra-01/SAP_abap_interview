@@ -1,5 +1,8 @@
 # 00 Interview Quickfire (Ultra-short)
 
+## Interview-ready paragraph (say this)
+To prepare for SAP interviews, I use quickfire questions to train fast recall of definitions, differences, and common pitfalls. I try to answer in one clear sentence first, then add one practical point like a performance rule or a common trap, so the interviewer hears both understanding and real-world awareness. If I miss a question, I immediately map it back to the related topic and repeat it until the answer becomes automatic.
+
 ## How to use
 - Read as flashcards: **Q → answer in 5 seconds**
 - If you can’t answer: jump to the linked topic

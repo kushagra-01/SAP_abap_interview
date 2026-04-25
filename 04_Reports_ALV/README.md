@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 In ABAP, reports are typically built around a selection screen, a single efficient data read, and a clean output. For output, ALV is the standard choice because it provides sorting, filtering, totals, layout variants, and export with minimal custom UI work. When performance matters, I focus on pushing filtering and aggregation to the database or CDS, selecting only required fields, and avoiding building massive internal tables unnecessarily. For large datasets on HANA, I mention options like ALV with IDA or analytics-style CDS approaches where appropriate.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask “SALV vs classical ALV,” I explain SALV is OO-based and quickest for standard grids, while classical REUSE_ALV_* function modules offer deeper event customization but are more procedural and verbose. For most report outputs, SALV is the fastest clean solution unless advanced event handling is required.
+
+If they ask about performance for big lists, I explain the real bottleneck is usually data volume and DB access, not the grid itself. I enforce filters, select only needed fields, push joins/aggregations to CDS, and avoid loading hundreds of thousands of rows into memory if the user only needs a summary or paging.
+
+If they ask about real-world usability, I mention layout variants, totals, sorting/filtering, and user commands like hotspots. I keep the UI standard so users get consistent SAP behavior, and I focus my custom code on business validations and correct data.
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: What is a report?

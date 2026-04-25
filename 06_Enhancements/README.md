@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 Enhancements are the SAP-supported way to add custom logic to standard processes without modifying SAP objects, which keeps upgrades safer. In interviews I explain that user exits are older, procedural enhancement mechanisms, while BAdIs are the more modern, OO-based option that can support controlled implementations. I also connect it to S/4 clean core: prefer released extension points and APIs, keep enhancement logic small, and delegate heavy processing to well-structured service classes. The practical focus is maintainability—too many enhancements without discipline make debugging and upgrades painful.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask “how do you find them,” I explain that I search for enhancement spots based on the business transaction and then locate the appropriate user exit/BAdI through the standard tools and documentation. I also mention checking the call stack during debugging to identify enhancement points logically related to the process.
+
+If they ask about implementation strategy, I say I keep the enhancement code thin and delegate to a service class, so the exit is only a hook. This reduces the risk of performance regressions and makes the logic testable and maintainable.
+
+If they ask about clean core in S/4, I highlight using released extension points and APIs and avoiding modifications. When custom requirements are large or cross-system, I mention side-by-side extensions or event-driven integration so the ERP core stays upgrade-safe.
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: What is an enhancement?

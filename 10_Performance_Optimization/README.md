@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 When I optimize ABAP performance, I start by measuring and then remove the biggest bottlenecks, which are usually database roundtrips and large data volumes. The first rule is to avoid SELECT inside loops and instead fetch data in a single select using joins, `IN`, or safe `FOR ALL ENTRIES`, selecting only the fields actually needed. On the ABAP side, I choose the right internal table type—hashed for heavy key lookups and sorted for ordered or range access—and I avoid unnecessary copying of large rows. I also check indexes and WHERE conditions because a good data model and proper filtering often give the largest improvements. Finally, I keep a pushdown mindset: aggregations and joins belong in CDS/Open SQL when datasets are large.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask “how do you measure,” I answer that I start with runtime and SQL tracing rather than guessing. I look for the top expensive SQL statements, number of DB roundtrips, and whether predicates use indexes effectively, because that usually explains most of the runtime.
+
+If they ask about `FOR ALL ENTRIES`, I explain it is useful to replace select-in-loop, but only when the driving table is not initial and keys are cleaned and deduped. Otherwise it can produce incorrect results or even select the entire table, which is a common interview trap.
+
+If they ask about balancing pushdown and ABAP logic, I explain that joins, filters, and aggregations belong in CDS/Open SQL for scale, while orchestration and business rules remain clearer in ABAP. I optimize only after confirming the hotspot, so the code stays maintainable.
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: Why is `SELECT *` bad?

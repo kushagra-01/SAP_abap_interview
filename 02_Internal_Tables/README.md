@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 An internal table is ABAP’s main in-memory structure for handling multiple records on the application server, like a working dataset for reports and processing. The key point is choosing the right table type based on access pattern: standard tables for sequential processing and appends, sorted tables when I need ordered output or range access, and hashed tables when I need very fast key-based lookups. For performance I avoid copying large rows, use `ASSIGNING` when needed, and I’m careful with patterns like `BINARY SEARCH` and `FOR ALL ENTRIES` because sorting and initial-table checks decide whether the code is correct and fast.
 
+## Follow-up answers (if interviewer asks deeper)
+If the interviewer asks how I choose between standard, sorted, and hashed, I explain it with access complexity and operations. Standard tables are easiest for sequential processing and appends, but key reads are linear, so they degrade with volume. Sorted tables give predictable key access and range reads because the system maintains order, while hashed tables give the fastest key lookup but don’t support index access or ordered loops the same way.
+
+If they ask about common pitfalls, I call out two patterns. `BINARY SEARCH` only works correctly after sorting by the same key, and `FOR ALL ENTRIES` is only safe when the driving table is not initial—otherwise it can read the full database table. In production, these two mistakes are responsible for many “works in dev, fails in prod” incidents.
+
+If they ask about performance tuning, I mention reducing copies and moving joins to the database. I use `ASSIGNING` or field-symbols for large rows, pick hashed tables for repeated lookups, and avoid nested loops that simulate joins in ABAP. For join-heavy logic, I prefer CDS/Open SQL pushdown rather than building everything in internal tables.
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: What is an internal table?

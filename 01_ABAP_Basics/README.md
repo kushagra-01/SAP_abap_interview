@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 ABAP is SAP’s application-server language used to build reports, enhancements, interfaces, and business services. In day-to-day development I focus on clean Open SQL: filtering early with `WHERE`, selecting only required fields, and avoiding SELECT inside loops to keep performance stable. I rely on DDIC types for consistency, use internal tables for processing sets of records, and I’m disciplined about `sy-subrc` checks and LUW handling so updates are correct. If something is slow or inconsistent, I first look at database roundtrips, missing filters or indexes, and improper commits or locking.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask about modern ABAP style, I mention I use ABAP 7.40+ syntax like inline declarations and host variables, because it makes code shorter and less error-prone. I still understand classical syntax, but I keep a consistent style so teams can maintain code easily.
+
+If they ask about updates and consistency, I explain LUW boundaries and why “commit location” matters. I avoid committing deep inside helper code unless it is explicitly required, and I use lock objects when concurrent updates can cause lost updates or inconsistent states. The aim is predictable transactional behavior, not just “code that runs.”
+
+If they ask about performance mindset, I explain that database design and access patterns dominate runtime. I prefer filtering in SQL/CDS, avoid N+1 selects, and measure with traces rather than guessing. Once DB access is clean, I optimize internal table access and copying.
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: What is ABAP used for?

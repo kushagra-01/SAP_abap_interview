@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 In SAP, real-time scenarios are not just about speed; they are about delivering low-latency responses while keeping data consistent under concurrency and integration retries. The core building blocks are LUW boundaries, locking through enqueue objects to prevent lost updates, and reliable messaging patterns when other systems are involved. I always plan for retries, so I implement idempotency using message IDs or business keys to avoid duplicate postings, and when ordering matters I use queues like qRFC or key-based sequencing. Finally, real-time systems must be observable, so I ensure errors are logged with enough context and monitoring is in place to support production operations.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask about concurrency, I explain that without locks two users or processes can overwrite each other and create lost updates. So I define the lock key clearly, handle lock failures gracefully, and keep the LUW boundary consistent so partial updates don’t leak into production.
+
+If they ask about duplicates and retries, I explain that most integration guarantees are “at least once,” so duplicates are expected. The fix is idempotency: store a message ID or unique business key and check it before posting so retries are safe.
+
+If they ask about ordering and scale, I explain queues when sequence matters and event-driven patterns when decoupling matters. The trade-off is throughput vs correctness, and the final piece is observability—logs and monitoring—so issues are diagnosable quickly.
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: What does “real-time” mean in SAP context?

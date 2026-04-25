@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 DDIC is SAP’s Data Dictionary layer where we define the technical and semantic foundation of data: tables, structures, domains, data elements, and related objects like search helps and lock objects. In interviews I usually emphasize that good DDIC design drives both correctness and performance: correct primary keys, suitable secondary indexes for common filters, and buffering only for small, stable, read-heavy customizing tables. I also mention that DDIC foreign keys are mainly for consistency checks and UI/help behavior, while locking is handled through enqueue objects to prevent concurrent update issues in the application server LUW.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask “domain vs data element,” I explain the split between technical and semantic definitions. The domain controls the technical attributes like type, length, and value range, while the data element provides the business meaning, field labels, and reusability across tables and structures.
+
+If they ask about buffering, I emphasize it’s a performance feature with risks. Buffering is ideal for small, stable customizing tables that are read frequently, but it can cause stale reads for frequently changing transactional data, so I avoid buffering there and rely on proper indexing and good WHERE clauses instead.
+
+If they ask about keys and indexes, I explain that primary keys define uniqueness and access patterns, and secondary indexes should match common filter fields. In performance issues, I correlate slow selects with missing indexes or non-sargable predicates and fix the DDIC design rather than only “tuning ABAP code.”
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: What is DDIC?

@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 S/4HANA is SAP’s modern ERP optimized for HANA, with a simplified data model and a strong focus on Fiori-based user experience. In interviews I explain that the biggest shift is how we build and extend: we reuse standard content, prefer CDS as the semantic layer, and follow clean-core principles so upgrades remain safe. Extensibility is done through released APIs, enhancement points, and in-app or side-by-side extensions depending on complexity, rather than modifying standard code. From a developer perspective, I connect this to performance and consistency—pushdown, reuse, and clear contracts—so solutions scale and remain maintainable over time.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask what “simplification” means technically, I explain that S/4 removes redundant aggregates and some legacy tables, and instead encourages calculating views dynamically using CDS and HANA capabilities. That changes how custom code should read data: reuse standard views/APIs rather than hardcoding legacy table assumptions.
+
+If they ask about clean core, I explain it’s an upgrade strategy as much as a development guideline. We avoid modifications, use released APIs and extension points, and choose between in-app and side-by-side extensibility based on how intrusive or large the custom requirement is.
+
+If they ask about modern development direction, I connect the stack: CDS for the semantic model, RAP for transactional services, and OData/Fiori elements for consumption. This reduces custom glue code and gives a consistent, supportable architecture.
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: What is S/4HANA?

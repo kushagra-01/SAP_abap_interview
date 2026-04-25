@@ -8,6 +8,13 @@
 ## Interview-ready paragraph (say this)
 I’m SAP-focused in the sense that I’ve been working hands-on with ABAP and modern S/4 development patterns like CDS, RAP, and OData through practice environments and end-to-end projects. I don’t claim client go-lives, but I can clearly explain what I built: the business problem, the data model in DDIC/CDS, the service exposure, and the performance decisions like avoiding select-in-loop and pushing joins and filters down. I’m comfortable discussing real enterprise concerns like LUW consistency, locking, error handling, and integration reliability, and I can defend my approach with clean, repeatable patterns.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask “how much real experience,” I answer confidently but accurately: I’ve built end-to-end SAP implementations in practice environments and can demonstrate the full flow, but I’m not claiming production client ownership. Then I immediately pivot to specifics—artifacts I built, design choices, and what I learned—because that is what interviewers can validate through follow-up questions.
+
+If they ask for examples, I describe one project end-to-end: DDIC model, CDS view, RAP behavior, and how it was exposed as an OData service, including at least one performance improvement like reducing DB roundtrips or pushing aggregations down. I also mention one production-style concern like locking, validations, or idempotency so the narrative feels enterprise-ready without exaggeration.
+
+If they challenge depth, I offer to explain a concrete scenario such as “duplicate posting due to retries” or “slow report due to select-in-loop” and walk through the fix. This makes the story defensible because it’s based on repeatable engineering patterns, not unverifiable claims.
+
 ---
 
 ## 1) Profile Summary (Numbered)

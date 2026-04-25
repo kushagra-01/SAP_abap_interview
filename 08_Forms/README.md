@@ -7,6 +7,13 @@
 ## Interview-ready paragraph (say this)
 In SAP, forms are used to generate business documents like invoices, purchase orders, and delivery notes with a controlled layout and output options such as print, spool, email, or PDF. I usually explain SmartForms as the classic SAP tool for print forms and Adobe Forms as the more modern option with stronger PDF capabilities and design tooling. From an implementation standpoint, the key practice is to prepare all data before calling the form and avoid database selects inside the form logic, because that’s the most common real-world cause of slow and fragile outputs. I also mention testing and debugging through spool/output settings and consistent formatting using styles.
 
+## Follow-up answers (if interviewer asks deeper)
+If they ask how forms are called, I explain the typical runtime pattern: resolve the generated function module (SmartForms) or call the Adobe form processing API, pass a clean interface structure/tables, and control output via spool and device settings. The form itself should be mostly layout logic, not data fetching.
+
+If they ask about performance problems, I explain they usually come from repeated DB access or heavy calculations inside the form. I fix it by preparing data once, passing prebuilt internal tables, avoiding repeated formatting work, and keeping images/fonts optimized for print/PDF.
+
+If they ask about maintainability, I mention stable form interfaces, careful transport/version control of layouts, and keeping formatting in styles rather than hard-coded settings. This reduces production issues when business users request frequent layout changes.
+
 ## Interview Questions (Beginner → Advanced)
 ### Beginner
 - Q: What are SmartForms used for?

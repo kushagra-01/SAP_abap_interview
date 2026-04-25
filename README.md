@@ -7,6 +7,9 @@
 - **Drill** the **Beginner → Advanced Q&A** (answers are intentionally 1–3 lines).
 - **Practice** only the **code patterns** (small + reusable).
 
+## Interview-ready paragraph (say this)
+I’m preparing for SAP ABAP interviews by focusing on strong fundamentals and modern S/4 patterns like CDS, RAP, and OData, while also being comfortable with classical topics like ALV, enhancements, and forms. My answers follow a simple structure: a clear definition, where it’s used, the key trade-off, and one real-world pitfall. I also emphasize performance and reliability—avoiding select-in-loop, pushing down joins and aggregations, handling LUW and locks correctly, and designing integrations with retries and idempotency—because these are the points interviewers typically probe.
+
 ## Recommended order (80/20)
 1. [01_ABAP_Basics](01_ABAP_Basics/README.md)
 2. [02_Internal_Tables](02_Internal_Tables/README.md)
