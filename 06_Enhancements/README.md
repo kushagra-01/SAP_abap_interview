@@ -30,9 +30,9 @@ If they ask about clean core in S/4, I highlight using released extension points
 - Q: How does S/4 clean core change enhancement strategy?
 
 ## Best Answers (1–3 lines)
-- A: User exit = older enhancement via includes/FM; limited and often single-spot.
-- A: BAdI = OO-based enhancement; can be **multiple** implementations (classic) or **single** (new).
-- A: Goal is **no modification**; keep upgrade-safe.
+- A: I treat a **user exit** as the older enhancement style (includes/function modules) and I use it mostly in legacy scenarios.
+- A: I prefer **BAdIs** because they’re OO-based and can support controlled implementations (often multiple in classic BAdIs).
+- A: My goal with enhancements is **no modification** of SAP standard, so upgrades stay safe and debugging stays manageable.
 
 ## Code examples (minimal patterns)
 

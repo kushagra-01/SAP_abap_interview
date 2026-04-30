@@ -32,11 +32,11 @@ If they ask about tuning a slow join-heavy report, I explain the sequence: reduc
 - Q: How do you optimize a join-heavy report in S/4?
 
 ## Best Answers (1–3 lines)
-- A: HANA is **in-memory, columnar** DB optimized for joins/aggregations and compression.
-- A: Column store enables fast scans + aggregates; HANA is great for analytics workloads.
-- A: Pushdown = move heavy joins/calculations to DB using **CDS/Open SQL/AMDP**.
-- A: Code-to-data = compute where data lives (DB) instead of moving huge data to ABAP.
-- A: Don’t push blindly: keep business rules/testability and avoid over-complex DB logic.
+- A: I describe HANA as an **in-memory, columnar** database that’s excellent for joins, aggregations, and compression at scale.
+- A: I explain that the column store enables fast scans and aggregates, which is why HANA performs well for analytics-style workloads.
+- A: When I say “pushdown,” I mean moving heavy joins and calculations to the database using **CDS**, efficient Open SQL, or AMDP where justified.
+- A: I follow “code-to-data”: I compute where the data lives (DB) instead of pulling huge datasets into ABAP loops.
+- A: I don’t push everything blindly—I keep complex business rules where they stay testable and maintainable.
 
 ## Code examples (minimal patterns)
 ### Pushdown mindset (Open SQL fields + filter)

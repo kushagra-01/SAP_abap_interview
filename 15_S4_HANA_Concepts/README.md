@@ -32,10 +32,10 @@ If they ask about modern development direction, I connect the stack: CDS for the
 - Q: Common migration impact on custom code?
 
 ## Best Answers (1–3 lines)
-- A: S/4HANA is SAP’s ERP optimized for **HANA** with simplified data model and modern UX (Fiori).
-- A: Simplification removes redundant tables/aggregates; compute on the fly (pushdown + views).
-- A: Clean core = keep standard clean; extend via **released APIs**, BAdIs, key user extensibility, side-by-side.
-- A: CDS is the semantic layer for apps, analytics, and services in S/4.
+- A: I describe **S/4HANA** as SAP’s ERP optimized for **HANA**, with a simplified data model and a Fiori-first user experience.
+- A: When I say “simplification,” I mean fewer redundant aggregates and more compute-on-the-fly via CDS views and pushdown.
+- A: For **clean core**, I avoid modifications and extend using released APIs, enhancement points/BAdIs, and in-app or side-by-side extensibility depending on scope.
+- A: I treat **CDS** as the semantic layer that powers apps, analytics, and service exposure in S/4.
 
 ## Code examples (minimal patterns)
 ### “Released API / view first” mindset (pattern)

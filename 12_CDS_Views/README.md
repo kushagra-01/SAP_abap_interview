@@ -32,10 +32,10 @@ If they ask about maintainability, I explain the layered approach: stable interf
 - Q: Performance traps in CDS (cardinality, unnecessary associations)?
 
 ## Best Answers (1–3 lines)
-- A: CDS = DB-side semantic model with **SQL + metadata annotations** for reuse.
-- A: CDS enables **pushdown** and consistent semantics across reports, OData, and Fiori.
-- A: Association is a modeled relationship (navigational); join is immediate combination—choose for performance/need.
-- A: Authorization can be enforced via **DCL** + `@AccessControl.authorizationCheck`.
+- A: I use **CDS** as a DB-side semantic model: SQL plus metadata annotations that can be reused across apps and services.
+- A: I rely on CDS for **pushdown** and consistent semantics across reports, OData, and Fiori consumption.
+- A: I use **associations** to model navigational relationships, and I use joins when I need an explicit combination for the query and performance demands it.
+- A: For security, I enforce authorization via **DCL** and `@AccessControl.authorizationCheck` so reuse doesn’t leak data.
 
 ## Code examples (minimal patterns)
 ### Minimal CDS view skeleton (memory pattern)

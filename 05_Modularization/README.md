@@ -29,9 +29,9 @@ If they ask about code ownership and testability, I say methods with interfaces 
 - Q: How to avoid global state issues in function groups?
 
 ## Best Answers (1–3 lines)
-- A: FORM = local procedural; quick but less reusable/testable.
-- A: Function Module = reusable with RFC/update/task options; grouped in function group.
-- A: Method = OO, best for clean design, testing, dependency injection.
+- A: I use a **FORM** mainly in legacy reports for quick local procedural logic, but I avoid it for new reusable business code.
+- A: I use a **function module** when SAP frameworks expect it (RFC/update task/BAPI patterns), and I keep it reusable and not dependent on hidden function-group globals.
+- A: For modern development, I prefer **classes and methods** because they support clean design and unit testing.
 
 ## Code examples (minimal patterns)
 

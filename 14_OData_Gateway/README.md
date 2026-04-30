@@ -32,10 +32,10 @@ If they ask about SEGW vs RAP exposure, I explain SEGW can work but often involv
 - Q: How to handle deep insert/update patterns safely?
 
 ## Best Answers (1–3 lines)
-- A: OData = REST protocol for exposing data as **entities** with standard query options.
-- A: `$filter/$select` reduce data volume; `$expand` fetches related entities in one call.
-- A: SEGW is classic manual OData modeling; RAP can expose OData with less boilerplate.
-- A: Secure via **auth checks** + role/catalog setup; avoid leaking fields; use CDS/DCL where applicable.
+- A: I explain **OData** as a REST protocol that exposes business data as entities with standard query options.
+- A: I use `$filter` and `$select` to reduce payload, and I use `$expand` to fetch related entities in fewer roundtrips when it makes sense.
+- A: I treat **SEGW** as the classic manual approach, and for new S/4 work I prefer **RAP-based exposure** to reduce boilerplate.
+- A: I secure OData by enforcing authorization consistently (CDS/DCL where applicable or explicit checks) so the service never leaks fields or records.
 
 ## Code examples (minimal patterns)
 ### Think like OData: minimize payload

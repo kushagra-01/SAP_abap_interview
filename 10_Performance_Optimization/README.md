@@ -32,11 +32,11 @@ If they ask about balancing pushdown and ABAP logic, I explain that joins, filte
 - Q: Locking/LUW impact on performance?
 
 ## Best Answers (1–3 lines)
-- A: Biggest wins: **reduce DB calls**, **filter early**, **select only needed fields**, avoid N+1.
-- A: `SELECT in LOOP` = N DB roundtrips; replace with **single select + join/FAE**.
-- A: `FOR ALL ENTRIES` is safe only if driving table **not initial** + keys deduped.
-- A: Use **hashed** for heavy key lookups; **sorted** for range + ordered data.
-- A: Measure with **ST05 (SQL trace)** and **SAT (runtime analysis)**; optimize what’s hot.
+- A: My biggest wins come from reducing DB roundtrips, filtering early, selecting only needed fields, and avoiding N+1 patterns.
+- A: When I see `SELECT` in a loop, I replace it with a single set-based read using joins, `IN`, or safe `FOR ALL ENTRIES`.
+- A: I use `FOR ALL ENTRIES` only when the driving table is **not initial** and keys are deduped/cleaned.
+- A: For ABAP-side speed, I use **hashed** tables for heavy key lookups and **sorted** tables for ordered or range access.
+- A: I measure first with **ST05** (SQL trace) and **SAT** (runtime analysis), and I optimize only the proven hotspots.
 
 ## Code examples (minimal patterns)
 ### Bad: SELECT in loop (anti-pattern)

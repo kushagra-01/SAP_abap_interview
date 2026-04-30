@@ -1,8 +1,8 @@
-# 08 Forms (SmartForms / Adobe)
+# 08 Forms (SmartForms / SAPScript / Adobe)
 
 ## Concept (2–3 lines)
 - Forms generate business documents (invoice, PO, delivery) with **layout + print/email**.
-- SmartForms = older SAP form tech; Adobe Forms = newer, better design tooling.
+- SAPScript = oldest; SmartForms = classic SAP form tech; Adobe Forms = newer, better design tooling.
 
 ## Interview-ready paragraph (say this)
 In SAP, forms are used to generate business documents like invoices, purchase orders, and delivery notes with a controlled layout and output options such as print, spool, email, or PDF. I usually explain SmartForms as the classic SAP tool for print forms and Adobe Forms as the more modern option with stronger PDF capabilities and design tooling. From an implementation standpoint, the key practice is to prepare all data before calling the form and avoid database selects inside the form logic, because that’s the most common real-world cause of slow and fragile outputs. I also mention testing and debugging through spool/output settings and consistent formatting using styles.
@@ -30,9 +30,9 @@ If they ask about maintainability, I mention stable form interfaces, careful tra
 - Q: How do you handle multi-language/currency formatting?
 
 ## Best Answers (1–3 lines)
-- A: SmartForms = SAP-managed printing with windows/pages; outputs spool/PDF.
-- A: Adobe = interactive/print forms; better PDF features; common in S/4.
-- A: Best practice: prepare data first, then call form once (avoid selects in form).
+- A: I use **SmartForms** for classic SAP print forms with windows/pages, typically producing spool or PDF output.
+- A: I use **Adobe Forms** when I need modern PDF capabilities or richer layouts, and it’s common in S/4 landscapes.
+- A: My best practice is to prepare all data first and then call the form once, so I avoid database selects inside the form logic.
 
 ## Code examples (minimal patterns)
 

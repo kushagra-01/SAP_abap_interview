@@ -31,10 +31,10 @@ If they ask about ordering and scale, I explain queues when sequence matters and
 - Q: How to handle high concurrency updates safely?
 
 ## Best Answers (1–3 lines)
-- A: Real-time = low latency + consistent results; requires **locks + LUW + retries** strategy.
-- A: Locks (enqueue) prevent lost updates; LUW ensures atomic commit/rollback.
-- A: Idempotency prevents duplicates during retries (store message ID / business key).
-- A: For ordering, use **queues (qRFC)** or ordered processing key.
+- A: When I say “real-time” in SAP, I mean low latency **and** consistent results, so I need a locks + LUW + retries strategy.
+- A: I use enqueue locks to prevent lost updates, and I keep a clean LUW so the change commits atomically or rolls back safely.
+- A: I design for retries by implementing idempotency (message ID or business key) so duplicates don’t get posted.
+- A: When ordering matters, I use **queues (qRFC)** or key-based ordered processing to guarantee sequence.
 
 ## Code examples (minimal patterns)
 ### Lock + update + commit (pattern)

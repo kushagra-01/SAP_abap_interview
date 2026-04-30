@@ -31,9 +31,9 @@ If they ask about real-world usability, I mention layout variants, totals, sorti
 - Q: How to handle authorization + large volumes cleanly?
 
 ## Best Answers (1–3 lines)
-- A: ALV gives **standard UI features** without custom screens (sort, filter, totals, export).
-- A: Classic FM ALV is older/procedural; **SALV** is OO and simpler for basic grids.
-- A: For huge data, pushdown and use **ALV with IDA** (HANA) or paging strategy.
+- A: I use **ALV** because it gives standard UI features (sort, filter, totals, export) without building custom screens.
+- A: I use **SALV** when I want the fastest OO setup for a standard grid, and I use classic ALV function modules only when I need deep legacy event customization.
+- A: For huge datasets, I push logic down (CDS/SQL) and consider **ALV with IDA** on HANA or a paging/summary strategy instead of loading everything.
 
 ## Code examples (minimal patterns)
 

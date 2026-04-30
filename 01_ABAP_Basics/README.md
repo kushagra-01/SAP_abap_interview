@@ -37,11 +37,11 @@ If they ask about performance mindset, I explain that database design and access
 - Q: Open SQL host variables `@` and inline declarations?
 
 ## Best Answers (1–3 lines)
-- A: ABAP is used to build **reports, interfaces, enhancements, services** on SAP; runs on **app server**.
-- A: Open SQL = **portable SQL** managed by SAP; supports buffering/authorization semantics.
-- A: Work area = **single row buffer** for a structure/table line.
-- A: `sy-subrc` = **return code** (0 = success); always check after reads/selects.
-- A: LUW = **unit of work**; `COMMIT WORK` ends LUW + persists changes.
+- A: I use ABAP to build SAP **reports, interfaces, enhancements, and services**, and it runs mainly on the **application server**.
+- A: I use **Open SQL** because it’s SAP-managed and portable across databases, and it integrates with SAP semantics like buffering.
+- A: I treat a work area as a **single-row buffer** for a structure or an internal table line.
+- A: I always check `sy-subrc` because it’s the **return code** (0 means success) after reads and DB operations.
+- A: I describe **LUW** as the unit of consistent work, and I end it with `COMMIT WORK` to persist changes (or rollback on error).
 
 ## Code examples (minimal patterns)
 

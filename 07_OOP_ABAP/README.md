@@ -31,10 +31,10 @@ If they ask how I apply OOP in real SAP work, I say I keep reports thin and move
 - Q: How to unit test ABAP code?
 
 ## Best Answers (1–3 lines)
-- A: Class = blueprint; Object = runtime instance.
-- A: Interface = **contract**; class can implement many interfaces.
-- A: Inheritance = “is-a” reuse; Polymorphism = call same method on different implementations.
-- A: Prefer interfaces + composition over deep inheritance.
+- A: I explain a **class** as the blueprint and an **object** as the runtime instance created from it.
+- A: I use an **interface** as a contract, and I let multiple classes implement it so I can switch implementations cleanly.
+- A: I use inheritance only for true “is-a” reuse, and I use polymorphism when I want to call the same method on different implementations through an interface.
+- A: In practice, I prefer interfaces and composition over deep inheritance because it keeps coupling low and testing easier.
 
 ## Code examples (minimal patterns)
 

@@ -34,11 +34,11 @@ If they ask about performance tuning, I mention reducing copies and moving joins
 - Q: How do you choose hashed vs sorted for large volumes?
 
 ## Best Answers (1–3 lines)
-- A: Standard table = **fast append**, linear key read; good for small/unsorted lists.
-- A: Sorted table = always sorted by key; **log(n)** key reads; supports range reads.
-- A: Hashed table = hash key; **O(1)** key reads; no index access; best for lookups.
-- A: `ASSIGNING` avoids copy; use for big rows/performance.
-- A: `FOR ALL ENTRIES` is safe only if driving table **not initial** + keys cleaned.
+- A: I use a **standard table** when I mainly append and loop, and I accept that key reads are linear, so it’s best for smaller lists.
+- A: I use a **sorted table** when I need ordered output or range reads, and I want predictable \(O(\log n)\) key access.
+- A: I use a **hashed table** for heavy key-based lookups because it gives near \(O(1)\) access, but it doesn’t support index-style processing.
+- A: For performance on big rows, I loop `ASSIGNING` because it avoids copying table lines.
+- A: I use `FOR ALL ENTRIES` only when the driving table is **not initial**, and I clean keys first so I don’t accidentally select the whole DB table.
 
 ## Code examples (minimal patterns)
 

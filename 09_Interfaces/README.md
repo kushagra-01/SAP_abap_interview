@@ -35,11 +35,11 @@ If they ask about ordering and throughput, I mention queueing strategies like qR
 - Q: How do you design an interface for high volume?
 
 ## Best Answers (1–3 lines)
-- A: **IDoc** = structured message (segments) for **asynchronous** integration; good for decoupling + volume.
-- A: **RFC** = remote function call; can be sync or async; used SAP↔SAP / SAP↔external connectors.
-- A: **BAPI** = stable, released business API (often RFC-enabled) with standard structures + return messages.
-- A: **tRFC** = transactional (at-least-once); **qRFC** adds **ordering** via queues.
-- A: **Idempotency** = detect duplicates (business key/message ID) so retries don’t double-post.
+- A: I use **IDocs** when I need asynchronous, high-volume, decoupled integration with good monitoring and retries.
+- A: I use **RFC** for remote calls (sync or async), especially for SAP-to-SAP or tightly coupled connectors.
+- A: For business operations, I prefer **BAPIs/released APIs** because they give stable contracts and standard return messages.
+- A: I explain **tRFC** as transactional at-least-once delivery, and **qRFC** as the same with guaranteed ordering through queues.
+- A: I design for **idempotency** by detecting duplicates via a business key or message ID so retries don’t double-post.
 
 ## Code examples (minimal patterns)
 ### Call BAPI + check return + commit

@@ -34,10 +34,10 @@ If they ask about keys and indexes, I explain that primary keys define uniquenes
 - Q: How do you handle extensibility in S/4 (append vs extend)?
 
 ## Best Answers (1–3 lines)
-- A: Domain = **technical properties** (type/length/range); Data Element = **semantic meaning** + labels.
-- A: Table = persistent DB object; Structure = **type** only (no DB storage).
-- A: Buffering = reads from app server memory; good for **small, rarely changing** tables.
-- A: Lock object = app-server enqueue to prevent concurrent update conflicts.
+- A: I define a **domain** for technical properties (type/length/value range), and I use a **data element** to carry the business meaning and labels.
+- A: I use a DDIC **table** for persistent DB storage, and a **structure** when I only need a reusable type without storage.
+- A: I enable **buffering** only for small, read-heavy, rarely changing tables, because buffering reads from app-server memory and can go stale.
+- A: I use a **lock object** (enqueue) to prevent concurrent update conflicts at the application-server level.
 
 ## Code examples (minimal patterns)
 

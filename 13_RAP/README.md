@@ -32,11 +32,11 @@ If they ask about real production readiness, I explain concurrency and error han
 - Q: How to expose RAP as OData?
 
 ## Best Answers (1–3 lines)
-- A: RAP = framework to build **transactional REST services** with consistent patterns (model + behavior + service).
-- A: Managed = RAP handles persistence; Unmanaged = you implement save logic (legacy/complex cases).
-- A: BDEF defines allowed operations + validations/actions; behavior impl contains logic.
-- A: EML is ABAP language to **read/modify entities** in RAP uniformly.
-- A: Draft supports UI “edit/save later” with temporary data + validations.
+- A: I use **RAP** to build transactional services with a consistent pattern: CDS model + behavior + service exposure.
+- A: I choose **managed RAP** when the framework can handle persistence, and **unmanaged RAP** when I need to plug in complex legacy save logic.
+- A: I define operations, validations, and actions in the **behavior definition (BDEF)**, and I implement the logic in the behavior implementation class.
+- A: I use **EML** as the ABAP way to read and modify RAP entities in a uniform, framework-friendly way.
+- A: I use **draft** when the UI needs an “edit now, save later” flow with temporary data and validations.
 
 ## Code examples (minimal patterns)
 ### EML modify (pattern)
