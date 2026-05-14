@@ -1,0 +1,2245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SAP BTP Full Stack Project — Complete Build Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   RESET & TOKENS
+═══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;
+  --bg2:#111118;
+  --bg3:#1a1a24;
+  --bg4:#22222f;
+  --border:#2a2a3a;
+  --border2:#353548;
+  --text:#e8e8f0;
+  --text2:#9090a8;
+  --text3:#5a5a72;
+  --accent:#00d4aa;
+  --accent2:#0099ff;
+  --accent3:#ff6b35;
+  --accent4:#a855f7;
+  --yellow:#fbbf24;
+  --red:#ef4444;
+  --green:#22c55e;
+  --mono:'JetBrains Mono',monospace;
+  --sans:'Syne',sans-serif;
+  --body:'Inter',sans-serif;
+}
+html{font-size:14px;scroll-behavior:smooth}
+body{
+  font-family:var(--body);
+  background:var(--bg);
+  color:var(--text);
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+}
+
+/* ═══════════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════════ */
+.sidebar{
+  width:260px;min-width:260px;
+  background:var(--bg2);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  overflow-y:auto;
+}
+.sb-brand{
+  padding:20px 16px 14px;
+  border-bottom:1px solid var(--border);
+}
+.sb-brand h1{
+  font-family:var(--sans);
+  font-size:14px;font-weight:800;
+  color:#fff;letter-spacing:-.01em;
+  line-height:1.3;
+}
+.sb-brand p{font-size:10.5px;color:var(--text3);margin-top:3px}
+.sb-group{margin-top:4px}
+.sb-group-title{
+  font-size:9px;font-weight:700;
+  color:var(--text3);text-transform:uppercase;
+  letter-spacing:.1em;padding:10px 16px 4px;
+}
+.nav-btn{
+  display:flex;align-items:center;gap:9px;
+  width:100%;padding:8px 16px;
+  background:none;border:none;
+  border-left:2px solid transparent;
+  color:var(--text2);font-family:var(--body);
+  font-size:12.5px;cursor:pointer;text-align:left;
+  transition:all .15s;
+}
+.nav-btn:hover{background:var(--bg3);color:var(--text)}
+.nav-btn.active{
+  background:rgba(0,212,170,.07);
+  border-left-color:var(--accent);
+  color:#fff;font-weight:600;
+}
+.nav-btn .icon{font-size:13px;width:16px;flex-shrink:0}
+.step-num{
+  margin-left:auto;
+  font-size:9px;font-weight:700;font-family:var(--mono);
+  padding:2px 6px;border-radius:4px;
+  background:var(--bg4);color:var(--text3);
+}
+.nav-btn.active .step-num{background:rgba(0,212,170,.15);color:var(--accent)}
+
+/* ═══════════════════════════════════════════
+   MAIN
+═══════════════════════════════════════════ */
+.main{flex:1;overflow-y:auto;background:var(--bg)}
+.content{max-width:940px;margin:0 auto;padding:28px 32px 100px}
+
+/* sections */
+.sec{display:none}
+.sec.active{display:block}
+
+/* ═══════════════════════════════════════════
+   PAGE HEADER
+═══════════════════════════════════════════ */
+.pg-head{margin-bottom:24px}
+.pg-eyebrow{
+  font-size:10px;font-weight:700;font-family:var(--mono);
+  color:var(--accent);text-transform:uppercase;
+  letter-spacing:.1em;margin-bottom:8px;
+}
+.pg-title{
+  font-family:var(--sans);
+  font-size:26px;font-weight:800;
+  color:#fff;line-height:1.2;letter-spacing:-.02em;
+}
+.pg-sub{font-size:13.5px;color:var(--text2);margin-top:6px;line-height:1.6}
+.pg-line{
+  height:2px;margin-top:16px;border-radius:2px;
+  background:linear-gradient(90deg,var(--accent),transparent);
+}
+
+/* ═══════════════════════════════════════════
+   STEP CARD (wrapper for each major step)
+═══════════════════════════════════════════ */
+.step-card{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:12px;
+  margin-bottom:16px;
+  overflow:hidden;
+}
+.step-header{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 18px;cursor:pointer;
+  background:var(--bg2);
+  transition:background .15s;
+}
+.step-header:hover{background:var(--bg3)}
+.step-num-badge{
+  width:28px;height:28px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  flex-shrink:0;
+}
+.sn-green{background:rgba(34,197,94,.15);color:var(--green)}
+.sn-blue{background:rgba(0,153,255,.15);color:var(--accent2)}
+.sn-orange{background:rgba(255,107,53,.15);color:var(--accent3)}
+.sn-purple{background:rgba(168,85,247,.15);color:var(--accent4)}
+.sn-teal{background:rgba(0,212,170,.15);color:var(--accent)}
+.sn-yellow{background:rgba(251,191,36,.15);color:var(--yellow)}
+.sn-red{background:rgba(239,68,68,.15);color:var(--red)}
+.step-title{
+  font-family:var(--sans);font-size:15px;font-weight:700;
+  color:#fff;flex:1;
+}
+.step-tag{
+  font-size:10px;font-weight:700;font-family:var(--mono);
+  padding:3px 8px;border-radius:4px;
+  flex-shrink:0;
+}
+.tag-setup{background:rgba(34,197,94,.1);color:var(--green)}
+.tag-code{background:rgba(0,153,255,.1);color:var(--accent2)}
+.tag-db{background:rgba(168,85,247,.1);color:var(--accent4)}
+.tag-sec{background:rgba(255,107,53,.1);color:var(--accent3)}
+.tag-deploy{background:rgba(251,191,36,.1);color:var(--yellow)}
+.tag-ui{background:rgba(0,212,170,.1);color:var(--accent)}
+.step-body{
+  display:none;
+  border-top:1px solid var(--border);
+  padding:0;
+}
+.step-body.open{display:block}
+
+/* ═══════════════════════════════════════════
+   CONTENT BLOCKS INSIDE STEP
+═══════════════════════════════════════════ */
+.block{padding:16px 18px;border-bottom:1px solid var(--border)}
+.block:last-child{border-bottom:none}
+
+.block-label{
+  font-size:10px;font-weight:700;font-family:var(--mono);
+  text-transform:uppercase;letter-spacing:.08em;
+  margin-bottom:10px;display:flex;align-items:center;gap:6px;
+}
+.bl-why{color:var(--yellow)}
+.bl-what{color:var(--accent2)}
+.bl-how{color:var(--accent)}
+.bl-warn{color:var(--red)}
+.bl-result{color:var(--green)}
+
+/* text */
+.prose{font-size:13px;color:var(--text2);line-height:1.8}
+.prose strong{color:var(--text);font-weight:600}
+.prose code{
+  font-family:var(--mono);font-size:11.5px;
+  background:rgba(0,212,170,.08);
+  border:1px solid rgba(0,212,170,.2);
+  border-radius:4px;padding:1px 6px;color:var(--accent);
+}
+
+/* bullets */
+.blist{list-style:none;margin:0;padding:0}
+.blist li{
+  display:flex;align-items:flex-start;gap:9px;
+  font-size:13px;color:var(--text2);line-height:1.75;
+  padding:4px 0;border-bottom:1px solid rgba(255,255,255,.03);
+}
+.blist li:last-child{border-bottom:none}
+.blist li::before{
+  content:'▸';color:var(--accent);font-size:10px;
+  flex-shrink:0;margin-top:5px;
+}
+.blist li strong{color:var(--text)}
+.blist li code{
+  font-family:var(--mono);font-size:11px;
+  background:rgba(0,153,255,.08);
+  border:1px solid rgba(0,153,255,.2);
+  border-radius:3px;padding:0 5px;color:var(--accent2);
+}
+
+/* sub bullets */
+.sub-blist{list-style:none;margin:6px 0 2px 18px;padding:0}
+.sub-blist li::before{content:'→';color:var(--accent2);font-size:10px}
+
+/* ═══════════════════════════════════════════
+   TERMINAL / CODE BLOCKS
+═══════════════════════════════════════════ */
+.terminal{
+  background:#0d0d14;
+  border:1px solid var(--border2);
+  border-radius:8px;
+  margin:10px 0;
+  overflow:hidden;
+}
+.term-bar{
+  background:var(--bg3);
+  padding:7px 12px;
+  display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid var(--border);
+}
+.term-dots{display:flex;gap:5px}
+.term-dot{width:10px;height:10px;border-radius:50%}
+.td-r{background:#ff5f57}
+.td-y{background:#febc2e}
+.td-g{background:#28c840}
+.term-label{
+  font-family:var(--mono);font-size:10px;
+  color:var(--text3);margin-left:4px;
+}
+.term-body{
+  padding:12px 16px;
+  font-family:var(--mono);font-size:12px;
+  line-height:1.8;color:#cdd6f4;
+  white-space:pre-wrap;overflow-x:auto;
+}
+.term-body .cmd{color:#89dceb}
+.term-body .comment{color:#45475a}
+.term-body .out{color:#a6e3a1}
+.term-body .file{color:#f9e2af}
+.term-body .key{color:#cba6f7}
+.term-body .val{color:#a6e3a1}
+.term-body .str{color:#a6e3a1}
+.term-body .num{color:#fab387}
+.term-body .kw{color:#cba6f7}
+.term-body .fn{color:#89b4fa}
+.term-body .ann{color:#f38ba8}
+.term-body .type{color:#f9e2af}
+
+/* ═══════════════════════════════════════════
+   FILE TREE
+═══════════════════════════════════════════ */
+.filetree{
+  background:#0d0d14;
+  border:1px solid var(--border2);
+  border-radius:8px;
+  padding:14px 16px;
+  font-family:var(--mono);font-size:12px;
+  color:#cdd6f4;line-height:2;
+  margin:10px 0;
+}
+.ft-dir{color:#89b4fa;font-weight:700}
+.ft-file{color:#cdd6f4}
+.ft-cds{color:var(--accent)}
+.ft-js{color:#f9e2af}
+.ft-json{color:#fab387}
+.ft-yaml{color:#f38ba8}
+.ft-html{color:#89dceb}
+.ft-comment{color:#45475a;font-size:10.5px}
+
+/* ═══════════════════════════════════════════
+   CALLOUT BOXES
+═══════════════════════════════════════════ */
+.callout{
+  border-radius:8px;padding:12px 14px;
+  margin:10px 0;display:flex;gap:10px;
+  align-items:flex-start;
+}
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.callout-text{font-size:12.5px;line-height:1.75;color:var(--text2)}
+.callout-text strong{color:var(--text)}
+.callout-text code{
+  font-family:var(--mono);font-size:11px;
+  background:rgba(255,255,255,.06);
+  border-radius:3px;padding:0 5px;
+}
+.c-info{background:rgba(0,153,255,.08);border:1px solid rgba(0,153,255,.2)}
+.c-warn{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.2)}
+.c-danger{background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2)}
+.c-success{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2)}
+
+/* ═══════════════════════════════════════════
+   OVERVIEW CARDS (intro page)
+═══════════════════════════════════════════ */
+.overview-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:10px;margin-bottom:20px;
+}
+.ov-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;padding:14px 16px;
+}
+.ov-num{
+  font-family:var(--mono);font-size:28px;font-weight:700;
+  color:var(--accent);line-height:1;
+}
+.ov-label{font-size:11px;color:var(--text2);margin-top:4px}
+
+.stack-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:10px;margin:14px 0;
+}
+.stack-item{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:8px;padding:12px 14px;
+  display:flex;align-items:flex-start;gap:10px;
+}
+.stack-icon{font-size:20px;flex-shrink:0}
+.stack-name{
+  font-family:var(--sans);font-size:13px;font-weight:700;color:#fff
+}
+.stack-desc{font-size:11.5px;color:var(--text2);margin-top:2px}
+
+/* scrollbar */
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* expand chevron */
+.chevron{
+  font-size:12px;color:var(--text3);
+  transition:transform .2s;margin-left:4px;
+}
+.step-body.open ~ .step-header .chevron,
+.step-header.open-indicator .chevron{transform:rotate(90deg)}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     SIDEBAR
+══════════════════════════════════════════════ -->
+<nav class="sidebar">
+  <div class="sb-brand">
+    <h1>SAP BTP Full Stack<br>Project Guide</h1>
+    <p>Local → HANA Cloud → Production</p>
+  </div>
+
+  <div class="sb-group">
+    <div class="sb-group-title">Start Here</div>
+    <button class="nav-btn active" onclick="nav('overview',this)">
+      <span class="icon">🗺️</span>Project Overview
+    </button>
+  </div>
+
+  <div class="sb-group">
+    <div class="sb-group-title">Phase 1 — Setup</div>
+    <button class="nav-btn" onclick="nav('s1',this)">
+      <span class="icon">💻</span>Prerequisites & Tools<span class="step-num">01</span>
+    </button>
+    <button class="nav-btn" onclick="nav('s2',this)">
+      <span class="icon">📁</span>Init CAP Project<span class="step-num">02</span>
+    </button>
+    <button class="nav-btn" onclick="nav('s3',this)">
+      <span class="icon">🗃️</span>Data Model (CDS)<span class="step-num">03</span>
+    </button>
+  </div>
+
+  <div class="sb-group">
+    <div class="sb-group-title">Phase 2 — Backend</div>
+    <button class="nav-btn" onclick="nav('s4',this)">
+      <span class="icon">⚙️</span>Service Layer<span class="step-num">04</span>
+    </button>
+    <button class="nav-btn" onclick="nav('s5',this)">
+      <span class="icon">🧠</span>Business Logic (JS)<span class="step-num">05</span>
+    </button>
+    <button class="nav-btn" onclick="nav('s6',this)">
+      <span class="icon">🔒</span>Security (XSUAA)<span class="step-num">06</span>
+    </button>
+  </div>
+
+  <div class="sb-group">
+    <div class="sb-group-title">Phase 3 — Frontend</div>
+    <button class="nav-btn" onclick="nav('s7',this)">
+      <span class="icon">🎨</span>Fiori Elements UI<span class="step-num">07</span>
+    </button>
+    <button class="nav-btn" onclick="nav('s8',this)">
+      <span class="icon">🌐</span>App Router Setup<span class="step-num">08</span>
+    </button>
+  </div>
+
+  <div class="sb-group">
+    <div class="sb-group-title">Phase 4 — Local Dev</div>
+    <button class="nav-btn" onclick="nav('s9',this)">
+      <span class="icon">🧪</span>Run & Test Locally<span class="step-num">09</span>
+    </button>
+    <button class="nav-btn" onclick="nav('s10',this)">
+      <span class="icon">🌱</span>Seed Data & Mock Auth<span class="step-num">10</span>
+    </button>
+  </div>
+
+  <div class="sb-group">
+    <div class="sb-group-title">Phase 5 — Deploy</div>
+    <button class="nav-btn" onclick="nav('s11',this)">
+      <span class="icon">🏗️</span>MTA Descriptor<span class="step-num">11</span>
+    </button>
+    <button class="nav-btn" onclick="nav('s12',this)">
+      <span class="icon">🚀</span>Build & Deploy to BTP<span class="step-num">12</span>
+    </button>
+    <button class="nav-btn" onclick="nav('s13',this)">
+      <span class="icon">✅</span>Verify & Debug<span class="step-num">13</span>
+    </button>
+  </div>
+
+  <div class="sb-group">
+    <div class="sb-group-title">Reference</div>
+    <button class="nav-btn" onclick="nav('ref',this)">
+      <span class="icon">📋</span>Full File Reference
+    </button>
+    <button class="nav-btn" onclick="nav('errors',this)">
+      <span class="icon">🔧</span>Common Errors & Fixes
+    </button>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     MAIN CONTENT
+══════════════════════════════════════════════ -->
+<main class="main">
+<div class="content">
+
+<!-- ████ OVERVIEW ████ -->
+<div class="sec active" id="sec-overview">
+  <div class="pg-head">
+    <div class="pg-eyebrow">SAP BTP Full Stack Project</div>
+    <div class="pg-title">Order Management App</div>
+    <div class="pg-sub">A production-ready full-stack app — CAP backend · HANA Cloud database · XSUAA security · Fiori Elements UI · deployed on Cloud Foundry</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="overview-grid">
+    <div class="ov-card"><div class="ov-num">13</div><div class="ov-label">Steps from zero to production</div></div>
+    <div class="ov-card"><div class="ov-num">~3h</div><div class="ov-label">To complete the full build</div></div>
+    <div class="ov-card"><div class="ov-num">100%</div><div class="ov-label">Production-grade code patterns</div></div>
+  </div>
+
+  <div class="block" style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:16px">
+    <div class="block-label bl-what">📦 What we are building</div>
+    <div class="prose">An <strong>Order Management System</strong> — users can create, read, update, delete orders and their line items. It has role-based access (Viewer vs Manager), draft support, and is deployed on SAP BTP Cloud Foundry with HANA Cloud as the database.</div>
+  </div>
+
+  <div class="stack-grid">
+    <div class="stack-item">
+      <div class="stack-icon">⚙️</div>
+      <div><div class="stack-name">CAP (Node.js)</div><div class="stack-desc">Framework for OData API, CDS models, event handlers</div></div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-icon">🗄️</div>
+      <div><div class="stack-name">SAP HANA Cloud</div><div class="stack-desc">In-memory DB via HDI containers on BTP</div></div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-icon">🔒</div>
+      <div><div class="stack-name">XSUAA</div><div class="stack-desc">OAuth2 JWT authentication, scopes, role-collections</div></div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-icon">🌐</div>
+      <div><div class="stack-name">App Router</div><div class="stack-desc">Entry point, login redirect, token forwarding</div></div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-icon">🎨</div>
+      <div><div class="stack-name">Fiori Elements</div><div class="stack-desc">Auto-generated UI from CDS annotations (LROP floorplan)</div></div>
+    </div>
+    <div class="stack-item">
+      <div class="stack-icon">☁️</div>
+      <div><div class="stack-name">Cloud Foundry + MTA</div><div class="stack-desc">Container platform + multi-module deployment</div></div>
+    </div>
+  </div>
+
+  <div class="block" style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:16px">
+    <div class="block-label bl-how">🗂️ Final Folder Structure Preview</div>
+    <div class="filetree">
+<span class="ft-dir">order-app/</span>
+├── <span class="ft-dir">app/</span>                         <span class="ft-comment">← Fiori Elements UI</span>
+│   └── <span class="ft-dir">orders/</span>
+│       ├── <span class="ft-html">webapp/index.html</span>
+│       ├── <span class="ft-json">webapp/manifest.json</span>
+│       ├── <span class="ft-cds">annotations.cds</span>
+│       └── <span class="ft-json">xs-app.json</span>
+├── <span class="ft-dir">approuter/</span>                   <span class="ft-comment">← App Router (front door)</span>
+│   ├── <span class="ft-json">xs-app.json</span>
+│   └── <span class="ft-json">package.json</span>
+├── <span class="ft-dir">db/</span>                          <span class="ft-comment">← Data model</span>
+│   ├── <span class="ft-cds">schema.cds</span>              <span class="ft-comment">← Entities (tables)</span>
+│   └── <span class="ft-dir">data/</span>
+│       ├── <span class="ft-file">my.Orders.csv</span>   <span class="ft-comment">← Seed data</span>
+│       └── <span class="ft-file">my.OrderItems.csv</span>
+├── <span class="ft-dir">srv/</span>                         <span class="ft-comment">← Service layer</span>
+│   ├── <span class="ft-cds">service.cds</span>             <span class="ft-comment">← OData service definition</span>
+│   ├── <span class="ft-js">service.js</span>              <span class="ft-comment">← Event handlers (business logic)</span>
+│   └── <span class="ft-cds">annotations.cds</span>         <span class="ft-comment">← Global UI annotations</span>
+├── <span class="ft-json">package.json</span>                 <span class="ft-comment">← Node deps + CAP config</span>
+├── <span class="ft-json">xs-security.json</span>             <span class="ft-comment">← XSUAA scopes and roles</span>
+├── <span class="ft-yaml">mta.yaml</span>                     <span class="ft-comment">← Deployment blueprint</span>
+└── <span class="ft-json">.cdsrc.json</span>                  <span class="ft-comment">← Local dev overrides</span>
+    </div>
+  </div>
+</div>
+
+<!-- ████ STEP 1 — PREREQUISITES ████ -->
+<div class="sec" id="sec-s1">
+  <div class="pg-head">
+    <div class="pg-eyebrow">Step 01 · Phase 1 — Setup</div>
+    <div class="pg-title">Prerequisites & Tools</div>
+    <div class="pg-sub">Install everything you need before writing a single line of code.</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-green">1.1</div>
+      <div class="step-title">Install Node.js (LTS)</div>
+      <span class="step-tag tag-setup">SETUP</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-why">⚡ Why</div>
+        <div class="prose">CAP runs on Node.js. You need the LTS (Long Term Support) version — not the latest. LTS is stable and production-safe.</div>
+      </div>
+      <div class="block">
+        <div class="block-label bl-how">💻 Commands</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">Terminal</span></div>
+          <div class="term-body"><span class="comment"># Check if Node is already installed</span>
+node --version       <span class="comment"># should show v20.x or v22.x</span>
+npm --version        <span class="comment"># should show 10.x+</span>
+
+<span class="comment"># If not installed: go to https://nodejs.org → download LTS</span>
+<span class="comment"># Or use nvm (Node Version Manager) — recommended for devs:</span>
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install --lts
+nvm use --lts</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-green">1.2</div>
+      <div class="step-title">Install CAP CLI (@sap/cds-dk)</div>
+      <span class="step-tag tag-setup">SETUP</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-why">⚡ Why</div>
+        <div class="prose"><code>cds</code> is the CAP command-line tool. It gives you <code>cds init</code>, <code>cds watch</code>, <code>cds build</code>, <code>cds deploy</code>. Without it you cannot create or run a CAP project.</div>
+      </div>
+      <div class="block">
+        <div class="block-label bl-how">💻 Commands</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">Terminal</span></div>
+          <div class="term-body"><span class="comment"># -g = install globally so 'cds' command works everywhere</span>
+npm install -g @sap/cds-dk
+
+<span class="comment"># Verify installation</span>
+cds --version     <span class="out"># should show: @sap/cds: 8.x.x</span>
+
+<span class="comment"># Also install MTA Build Tool (for deployment)</span>
+npm install -g mbt
+
+<span class="comment"># Install CF CLI (for deploying to Cloud Foundry)</span>
+<span class="comment"># Mac:   brew install cloudfoundry/tap/cf-cli@8</span>
+<span class="comment"># Win:   download from https://github.com/cloudfoundry/cli/releases</span>
+cf --version      <span class="out"># should show: cf version 8.x.x</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-green">1.3</div>
+      <div class="step-title">VS Code Extensions</div>
+      <span class="step-tag tag-setup">SETUP</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-what">📦 Extensions to install in VS Code</div>
+        <ul class="blist">
+          <li><strong>SAP CDS Language Support</strong> — syntax highlighting and autocomplete for <code>.cds</code> files. Extension ID: <code>SAPSE.vscode-cds</code></li>
+          <li><strong>XML by Red Hat</strong> — for editing <code>xs-app.json</code> and manifest files. ID: <code>redhat.vscode-xml</code></li>
+          <li><strong>ESLint</strong> — catches JavaScript errors before you run the code. ID: <code>dbaeumer.vscode-eslint</code></li>
+          <li><strong>REST Client</strong> — test OData APIs directly inside VS Code without Postman. ID: <code>humao.rest-client</code></li>
+          <li><strong>YAML</strong> — for <code>mta.yaml</code> editing with validation. ID: <code>redhat.vscode-yaml</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-green">1.4</div>
+      <div class="step-title">BTP Trial Account Setup</div>
+      <span class="step-tag tag-setup">SETUP</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-how">Steps to get your free BTP trial</div>
+        <ul class="blist">
+          <li>Go to <strong>account.hanatrial.ondemand.com</strong> → Register free trial</li>
+          <li>After login → go to BTP Cockpit → your trial subaccount</li>
+          <li>Enable <strong>Cloud Foundry</strong> environment → create a space called <code>dev</code></li>
+          <li>Go to <strong>Service Marketplace</strong> → subscribe to: <code>SAP HANA Cloud</code>, <code>SAP HANA Schemas & HDI Containers</code></li>
+          <li>Create a HANA Cloud instance (free tier) from the HANA Cloud Central</li>
+          <li>In CF space, create a HANA HDI service: <code>cf create-service hana hdi-shared order-hdi</code></li>
+        </ul>
+      </div>
+      <div class="callout c-info">
+        <div class="callout-icon">ℹ️</div>
+        <div class="callout-text">You do NOT need BTP for local development. Steps 1–10 run 100% locally with SQLite. BTP is only needed for Steps 11–13 (deployment).</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ STEP 2 — INIT PROJECT ████ -->
+<div class="sec" id="sec-s2">
+  <div class="pg-head">
+    <div class="pg-eyebrow">Step 02 · Phase 1 — Setup</div>
+    <div class="pg-title">Initialize the CAP Project</div>
+    <div class="pg-sub">Create the project skeleton and install all dependencies.</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-green">2.1</div>
+      <div class="step-title">Create the project</div>
+      <span class="step-tag tag-setup">SETUP</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">Terminal — run these in order</span></div>
+          <div class="term-body"><span class="comment"># 1. Create the CAP project (creates db/, srv/, package.json)</span>
+cds init order-app
+
+<span class="comment"># 2. Go into the folder</span>
+cd order-app
+
+<span class="comment"># 3. Open in VS Code</span>
+code .
+
+<span class="comment"># 4. Install Node dependencies</span>
+npm install
+
+<span class="comment"># 5. Add HANA support (for production deployment)</span>
+npm install @sap/cds-hana
+
+<span class="comment"># 6. Add XSUAA passport middleware (for JWT auth in production)</span>
+npm install @sap/xssec passport
+
+<span class="comment"># 7. Add approuter (front door for the app)</span>
+npm install @sap/approuter
+
+<span class="comment"># 8. Verify the project runs (SQLite + no auth locally)</span>
+cds watch
+<span class="out"># → Server started at http://localhost:4004</span></div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-label bl-why">⚡ Why each package</div>
+        <ul class="blist">
+          <li><code>@sap/cds-hana</code> — HANA database adapter. Without this, CAP cannot connect to HANA Cloud in production</li>
+          <li><code>@sap/xssec</code> — SAP's JWT token validation library. Verifies XSUAA tokens on every request</li>
+          <li><code>passport</code> — standard Node.js auth middleware. SAP's XSSEC plugs into Passport</li>
+          <li><code>@sap/approuter</code> — handles login, session, token forwarding for the UI</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-green">2.2</div>
+      <div class="step-title">Set up package.json with CAP config</div>
+      <span class="step-tag tag-code">CODE</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-why">⚡ Why</div>
+        <div class="prose">The <code>cds</code> section in <code>package.json</code> tells CAP what database to use, how to handle auth, and profile-specific overrides for local vs production.</div>
+      </div>
+      <div class="block">
+        <div class="block-label bl-what">📄 package.json</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">package.json</span></div>
+          <div class="term-body">{
+  <span class="key">"name"</span>: <span class="str">"order-app"</span>,
+  <span class="key">"version"</span>: <span class="str">"1.0.0"</span>,
+  <span class="key">"description"</span>: <span class="str">"Order Management App on SAP BTP"</span>,
+  <span class="key">"engines"</span>: { <span class="key">"node"</span>: <span class="str">">=20"</span> },
+
+  <span class="key">"dependencies"</span>: {
+    <span class="key">"@sap/cds"</span>: <span class="str">"^8"</span>,
+    <span class="key">"@sap/cds-hana"</span>: <span class="str">"^2"</span>,
+    <span class="key">"@sap/xssec"</span>: <span class="str">"^3"</span>,
+    <span class="key">"@sap/approuter"</span>: <span class="str">"^16"</span>,
+    <span class="key">"passport"</span>: <span class="str">"^0.7"</span>,
+    <span class="key">"express"</span>: <span class="str">"^4"</span>
+  },
+  <span class="key">"devDependencies"</span>: {
+    <span class="key">"@sap/cds-dk"</span>: <span class="str">"^8"</span>   <span class="comment">// cds CLI tools (local dev only)</span>
+  },
+
+  <span class="key">"scripts"</span>: {
+    <span class="key">"start"</span>: <span class="str">"cds-serve"</span>,     <span class="comment">// production start command</span>
+    <span class="key">"dev"</span>:   <span class="str">"cds watch"</span>,      <span class="comment">// local dev with hot-reload</span>
+    <span class="key">"build"</span>: <span class="str">"cds build --for hana"</span>  <span class="comment">// compile CDS for HANA</span>
+  },
+
+  <span class="key">"cds"</span>: {
+    <span class="key">"requires"</span>: {
+      <span class="comment">// Default (local dev) = SQLite in-memory</span>
+      <span class="key">"db"</span>: {
+        <span class="key">"kind"</span>: <span class="str">"sqlite"</span>,
+        <span class="key">"credentials"</span>: { <span class="key">"url"</span>: <span class="str">":memory:"</span> }
+      },
+      <span class="comment">// Auth is mocked locally (no XSUAA needed)</span>
+      <span class="key">"auth"</span>: { <span class="key">"kind"</span>: <span class="str">"mocked"</span> },
+
+      <span class="comment">// PRODUCTION overrides (activated when NODE_ENV=production)</span>
+      <span class="key">"[production]"</span>: {
+        <span class="key">"db"</span>: { <span class="key">"kind"</span>: <span class="str">"hana"</span> },
+        <span class="key">"auth"</span>: { <span class="key">"kind"</span>: <span class="str">"xsuaa"</span> }
+      }
+    },
+    <span class="key">"features"</span>: {
+      <span class="key">"fetch_csrf"</span>: <span class="val">true</span>    <span class="comment">// enable CSRF token fetching for writes</span>
+    }
+  }
+}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-green">2.3</div>
+      <div class="step-title">Create .cdsrc.json for local dev</div>
+      <span class="step-tag tag-setup">SETUP</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-why">⚡ Why</div>
+        <div class="prose">This file sets up <strong>mock users</strong> with roles so you can test role-based access locally without XSUAA. <code>alice</code> = Manager, <code>bob</code> = Viewer.</div>
+      </div>
+      <div class="block">
+        <div class="block-label bl-what">📄 .cdsrc.json (create in project root)</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">.cdsrc.json</span></div>
+          <div class="term-body">{
+  <span class="key">"requires"</span>: {
+    <span class="key">"auth"</span>: {
+      <span class="key">"kind"</span>: <span class="str">"mocked"</span>,
+      <span class="key">"users"</span>: {
+        <span class="key">"alice"</span>: {
+          <span class="key">"password"</span>: <span class="str">"alice"</span>,
+          <span class="key">"roles"</span>: [<span class="str">"OrderManager"</span>, <span class="str">"OrderViewer"</span>]
+        },
+        <span class="key">"bob"</span>: {
+          <span class="key">"password"</span>: <span class="str">"bob"</span>,
+          <span class="key">"roles"</span>: [<span class="str">"OrderViewer"</span>]
+        }
+      }
+    }
+  }
+}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ STEP 3 — DATA MODEL ████ -->
+<div class="sec" id="sec-s3">
+  <div class="pg-head">
+    <div class="pg-eyebrow">Step 03 · Phase 1 — Setup</div>
+    <div class="pg-title">Data Model (CDS)</div>
+    <div class="pg-sub">Define entities — these become HANA tables, OData entities, and CRUD APIs automatically.</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-blue">3.1</div>
+      <div class="step-title">db/schema.cds — Define all entities</div>
+      <span class="step-tag tag-code">CODE</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-why">⚡ Why each decision</div>
+        <ul class="blist">
+          <li><code>namespace my;</code> — namespaces prevent name collisions when multiple services share the same DB</li>
+          <li><code>: managed</code> — built-in CAP aspect that auto-adds <code>createdAt</code>, <code>createdBy</code>, <code>modifiedAt</code>, <code>modifiedBy</code></li>
+          <li><code>Association to</code> — loose reference (like FK). Customer exists independently</li>
+          <li><code>Composition of many</code> — strong ownership. Line items cannot exist without an Order. Enables deep insert and cascading delete</li>
+          <li><code>@odata.draft.enabled</code> — enables auto-save draft feature (users won't lose data if they close the tab)</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-label bl-what">📄 db/schema.cds</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">db/schema.cds</span></div>
+          <div class="term-body"><span class="comment">// Namespace groups all our entities under 'my'</span>
+<span class="kw">namespace</span> <span class="type">my</span>;
+
+<span class="comment">// ── ORDER STATUS enum ─────────────────────────────</span>
+<span class="comment">// Using enum instead of plain String prevents typos</span>
+<span class="comment">// and makes the API self-documenting</span>
+<span class="kw">type</span> <span class="type">OrderStatus</span> : <span class="type">String</span> <span class="kw">enum</span> {
+  DRAFT     = <span class="str">'DRAFT'</span>;
+  SUBMITTED = <span class="str">'SUBMITTED'</span>;
+  APPROVED  = <span class="str">'APPROVED'</span>;
+  REJECTED  = <span class="str">'REJECTED'</span>;
+  CANCELLED = <span class="str">'CANCELLED'</span>;
+}
+
+<span class="comment">// ── CUSTOMERS ────────────────────────────────────</span>
+<span class="comment">// 'managed' adds createdAt, createdBy, modifiedAt, modifiedBy</span>
+<span class="comment">// CAP fills these automatically — no handler code needed</span>
+<span class="kw">entity</span> <span class="type">Customers</span> : <span class="type">managed</span> {
+  <span class="kw">key</span> <span class="fn">ID</span>      : <span class="type">UUID</span>;
+  <span class="fn">name</span>        : <span class="type">String</span>(100) <span class="ann">@mandatory</span>;
+  <span class="fn">email</span>       : <span class="type">String</span>(200);
+  <span class="fn">phone</span>       : <span class="type">String</span>(50);
+  <span class="fn">city</span>        : <span class="type">String</span>(100);
+  <span class="fn">country</span>     : <span class="type">String</span>(2);    <span class="comment">// ISO country code: 'IN', 'US'</span>
+}
+
+<span class="comment">// ── ORDERS ───────────────────────────────────────</span>
+<span class="ann">@odata.draft.enabled</span>                <span class="comment">// enable auto-save draft</span>
+<span class="kw">entity</span> <span class="type">Orders</span> : <span class="type">managed</span> {
+  <span class="kw">key</span> <span class="fn">ID</span>        : <span class="type">UUID</span>;
+  <span class="fn">orderNo</span>      : <span class="type">String</span>(20)         <span class="comment">// human-readable order number</span>
+                   <span class="ann">@readonly</span>;         <span class="comment">// set by server, not client</span>
+  <span class="fn">customer</span>     : <span class="type">Association to</span> <span class="type">Customers</span>;  <span class="comment">// loose ref — customer exists independently</span>
+  <span class="fn">status</span>       : <span class="type">OrderStatus</span> <span class="kw">default</span> <span class="str">'DRAFT'</span>;
+  <span class="fn">description</span>  : <span class="type">String</span>(500);
+  <span class="fn">currency</span>     : <span class="type">String</span>(3) <span class="kw">default</span> <span class="str">'INR'</span>;
+
+  <span class="comment">// Composition = Orders OWNS the items (cascade delete, deep insert, draft)</span>
+  <span class="fn">items</span>        : <span class="type">Composition of many</span> <span class="type">OrderItems</span> <span class="kw">on</span> items.order = $self;
+
+  <span class="comment">// Calculated field — done by database (no JS needed)</span>
+  <span class="fn">totalAmount</span>  : <span class="type">Decimal</span>(15,2)
+                   <span class="ann">@Core.Computed</span>   <span class="comment">// tells UI this is read-only, server-computed</span>
+                   <span class="ann">@readonly</span>;
+}
+
+<span class="comment">// ── ORDER LINE ITEMS ──────────────────────────────</span>
+<span class="kw">entity</span> <span class="type">OrderItems</span> {
+  <span class="kw">key</span> <span class="fn">ID</span>        : <span class="type">UUID</span>;
+  <span class="fn">order</span>        : <span class="type">Association to</span> <span class="type">Orders</span>;   <span class="comment">// back-reference to parent</span>
+  <span class="fn">product</span>      : <span class="type">String</span>(200) <span class="ann">@mandatory</span>;
+  <span class="fn">quantity</span>     : <span class="type">Integer</span> <span class="kw">default</span> 1;
+  <span class="fn">unitPrice</span>    : <span class="type">Decimal</span>(15,2);
+  <span class="comment">// Calculated by DB: quantity * unitPrice</span>
+  <span class="fn">lineTotal</span>    : <span class="type">Decimal</span>(15,2) = <span class="fn">quantity</span> * <span class="fn">unitPrice</span>;
+}</div>
+        </div>
+      </div>
+      <div class="callout c-success">
+        <div class="callout-icon">✅</div>
+        <div class="callout-text"><strong>What CAP auto-generates from this file:</strong> HANA tables (in production), SQLite tables (locally), OData V4 entity types, CRUD API endpoints, $metadata document. Zero manual SQL or API code.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ STEP 4 — SERVICE LAYER ████ -->
+<div class="sec" id="sec-s4">
+  <div class="pg-head">
+    <div class="pg-eyebrow">Step 04 · Phase 2 — Backend</div>
+    <div class="pg-title">Service Layer (CDS)</div>
+    <div class="pg-sub">Define what is exposed as an OData API and lock it down with authorization.</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-blue">4.1</div>
+      <div class="step-title">srv/service.cds — OData service definition</div>
+      <span class="step-tag tag-code">CODE</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-why">⚡ Why</div>
+        <div class="prose">The service layer is the <strong>API contract</strong>. It decides which entities are exposed, which fields are visible, and who can do what. The DB entity is private — the service is what the outside world sees.</div>
+      </div>
+      <div class="block">
+        <div class="block-label bl-what">📄 srv/service.cds</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">srv/service.cds</span></div>
+          <div class="term-body"><span class="kw">using</span> { my } <span class="kw">from</span> <span class="str">'../db/schema'</span>;
+
+<span class="comment">// ────────────────────────────────────────────────</span>
+<span class="comment">// @requires: 'authenticated-user' means:</span>
+<span class="comment">// → ANY logged-in user can reach the service</span>
+<span class="comment">// → individual entity @restrict handles fine permissions</span>
+<span class="comment">// ────────────────────────────────────────────────</span>
+<span class="kw">service</span> <span class="type">OrderService</span> <span class="ann">@(requires: 'authenticated-user')</span> {
+
+  <span class="comment">// ── Customers ──────────────────────────────────</span>
+  <span class="comment">// Everyone can read customers, only Managers can write</span>
+  <span class="kw">entity</span> <span class="type">Customers</span> <span class="ann">@(restrict: [</span>
+    <span class="ann">{ grant: 'READ',                     to: 'OrderViewer'  },</span>
+    <span class="ann">{ grant: ['CREATE','UPDATE','DELETE'], to: 'OrderManager' }</span>
+  <span class="ann">])</span> <span class="kw">as projection on</span> <span class="type">my.Customers</span>;
+
+  <span class="comment">// ── Orders ─────────────────────────────────────</span>
+  <span class="comment">// Draft is inherited from the DB entity (@odata.draft.enabled)</span>
+  <span class="comment">// Viewers can READ, Managers can CREATE/UPDATE</span>
+  <span class="comment">// where clause: Viewers only see their OWN orders</span>
+  <span class="kw">entity</span> <span class="type">Orders</span> <span class="ann">@(restrict: [</span>
+    <span class="ann">{ grant: 'READ',                      to: 'OrderViewer',</span>
+      <span class="ann">where: 'createdBy = $user' },         </span><span class="comment">// row-level filter!</span>
+    <span class="ann">{ grant: 'READ',                      to: 'OrderManager' },</span>
+    <span class="ann">{ grant: ['CREATE','UPDATE'],          to: 'OrderManager' },</span>
+    <span class="ann">{ grant: 'DELETE',                     to: 'OrderManager' }</span>
+  <span class="ann">])</span> <span class="kw">as projection on</span> <span class="type">my.Orders</span>;
+
+  <span class="comment">// ── Order Items ────────────────────────────────</span>
+  <span class="kw">entity</span> <span class="type">OrderItems</span> <span class="ann">@(restrict: [</span>
+    <span class="ann">{ grant: 'READ',                         to: 'OrderViewer'  },</span>
+    <span class="ann">{ grant: ['CREATE','UPDATE','DELETE'],    to: 'OrderManager' }</span>
+  <span class="ann">])</span> <span class="kw">as projection on</span> <span class="type">my.OrderItems</span>;
+
+  <span class="comment">// ── Custom Actions ─────────────────────────────</span>
+  <span class="comment">// Bound action: called on a specific Order instance</span>
+  <span class="comment">// POST /Orders(ID)/OrderService.submitOrder</span>
+  <span class="kw">action</span> <span class="fn">submitOrder</span>(orderId: <span class="type">UUID</span>) <span class="kw">returns</span> <span class="type">Orders</span>;
+  <span class="kw">action</span> <span class="fn">approveOrder</span>(orderId: <span class="type">UUID</span>) <span class="kw">returns</span> <span class="type">Orders</span>;
+  <span class="kw">action</span> <span class="fn">rejectOrder</span>(orderId: <span class="type">UUID</span>, reason: <span class="type">String</span>) <span class="kw">returns</span> <span class="type">Orders</span>;
+
+  <span class="comment">// Unbound function: no specific Order needed</span>
+  <span class="comment">// GET /OrderService/getOrderStats()</span>
+  <span class="kw">function</span> <span class="fn">getOrderStats</span>() <span class="kw">returns</span> {
+    total: <span class="type">Integer</span>;
+    draft: <span class="type">Integer</span>;
+    submitted: <span class="type">Integer</span>;
+    approved: <span class="type">Integer</span>;
+    totalValue: <span class="type">Decimal</span>;
+  };
+}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ STEP 5 — BUSINESS LOGIC ████ -->
+<div class="sec" id="sec-s5">
+  <div class="pg-head">
+    <div class="pg-eyebrow">Step 05 · Phase 2 — Backend</div>
+    <div class="pg-title">Business Logic — srv/service.js</div>
+    <div class="pg-sub">Event handlers for validation, computed fields, and custom actions.</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-blue">5.1</div>
+      <div class="step-title">srv/service.js — Complete handler file</div>
+      <span class="step-tag tag-code">CODE</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-why">⚡ Handler phases explained</div>
+        <ul class="blist">
+          <li><code>before</code> — runs BEFORE the DB operation. Use for: input validation, enriching req.data (e.g. generating orderNo)</li>
+          <li><code>on</code> — REPLACES the default DB operation. Use for: fully custom logic</li>
+          <li><code>after</code> — runs AFTER the DB operation. Use for: computing derived fields (totalAmount), sending notifications</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-label bl-what">📄 srv/service.js</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">srv/service.js</span></div>
+          <div class="term-body"><span class="comment">// cds = the main CAP runtime object</span>
+<span class="kw">const</span> cds = <span class="fn">require</span>(<span class="str">'@sap/cds'</span>);
+
+<span class="comment">// module.exports = class pattern = the CAP-recommended way</span>
+<span class="comment">// 'this' inside refers to the service instance</span>
+<span class="kw">module.exports</span> = <span class="kw">class</span> <span class="type">OrderService</span> <span class="kw">extends</span> <span class="type">cds.ApplicationService</span> {
+
+  <span class="fn">async</span> <span class="fn">init</span>() {
+
+    <span class="comment">// ── DB entity refs (shorthand for SELECT/INSERT/UPDATE) ──</span>
+    <span class="kw">const</span> { Orders, OrderItems, Customers } = <span class="kw">this</span>.entities;
+
+    <span class="comment">// ════════════════════════════════════════════</span>
+    <span class="comment">// BEFORE handlers — validate BEFORE DB write</span>
+    <span class="comment">// ════════════════════════════════════════════</span>
+
+    <span class="comment">// Generate order number and set defaults before CREATE</span>
+    <span class="kw">this</span>.<span class="fn">before</span>(<span class="str">'CREATE'</span>, <span class="str">'Orders'</span>, <span class="kw">async</span> (req) => {
+      <span class="comment">// Generate a human-readable order number: ORD-20241115-0001</span>
+      <span class="kw">const</span> today = <span class="kw">new</span> <span class="type">Date</span>().<span class="fn">toISOString</span>().<span class="fn">slice</span>(0,10).<span class="fn">replace</span>(/-/g, <span class="str">''</span>);
+      <span class="kw">const</span> count = <span class="kw">await</span> <span class="type">SELECT</span>.<span class="fn">one</span>`<span class="str">SELECT count(*) as cnt FROM my_Orders</span>`;
+      req.data.orderNo = <span class="str">`ORD-</span>${today}<span class="str">-</span>${<span class="type">String</span>((count?.cnt || 0) + 1).<span class="fn">padStart</span>(4,<span class="str">'0'</span>)}<span class="str">`</span>;
+
+      <span class="comment">// Validate: customer must be provided</span>
+      <span class="kw">if</span> (!req.data.customer_ID) {
+        <span class="kw">return</span> req.<span class="fn">error</span>(400, <span class="str">'Customer is required to create an order'</span>);
+      }
+    });
+
+    <span class="comment">// Validate line items before saving</span>
+    <span class="kw">this</span>.<span class="fn">before</span>([<span class="str">'CREATE'</span>,<span class="str">'UPDATE'</span>], <span class="str">'OrderItems'</span>, (req) => {
+      <span class="kw">if</span> (req.data.quantity !== <span class="kw">undefined</span> && req.data.quantity <= 0) {
+        <span class="kw">return</span> req.<span class="fn">error</span>(400, <span class="str">'Quantity must be greater than 0'</span>);
+      }
+      <span class="kw">if</span> (req.data.unitPrice !== <span class="kw">undefined</span> && req.data.unitPrice < 0) {
+        <span class="kw">return</span> req.<span class="fn">error</span>(400, <span class="str">'Unit price cannot be negative'</span>);
+      }
+    });
+
+    <span class="comment">// ════════════════════════════════════════════</span>
+    <span class="comment">// AFTER handlers — enrich response AFTER DB read</span>
+    <span class="comment">// ════════════════════════════════════════════</span>
+
+    <span class="comment">// Compute totalAmount after every READ of Orders</span>
+    <span class="comment">// We calculate from items because lineTotal is DB-computed</span>
+    <span class="kw">this</span>.<span class="fn">after</span>(<span class="str">'READ'</span>, <span class="str">'Orders'</span>, <span class="kw">async</span> (orders, req) => {
+      <span class="kw">if</span> (!orders || orders.length === 0) <span class="kw">return</span>;
+
+      <span class="comment">// Handle both single object and array (READ vs READ by key)</span>
+      <span class="kw">const</span> list = <span class="type">Array</span>.<span class="fn">isArray</span>(orders) ? orders : [orders];
+
+      <span class="kw">for</span> (<span class="kw">const</span> order <span class="kw">of</span> list) {
+        <span class="kw">if</span> (!order.ID) <span class="kw">continue</span>;
+        <span class="kw">const</span> result = <span class="kw">await</span> <span class="type">SELECT</span>.<span class="fn">one</span>
+          .<span class="fn">from</span>(<span class="str">'my.OrderItems'</span>)
+          .<span class="fn">columns</span>(<span class="str">'sum(lineTotal) as total'</span>)
+          .<span class="fn">where</span>({ order_ID: order.ID });
+        order.totalAmount = result?.total ?? 0;
+      }
+    });
+
+    <span class="comment">// ════════════════════════════════════════════</span>
+    <span class="comment">// CUSTOM ACTIONS</span>
+    <span class="comment">// ════════════════════════════════════════════</span>
+
+    <span class="kw">this</span>.<span class="fn">on</span>(<span class="str">'submitOrder'</span>, <span class="kw">async</span> (req) => {
+      <span class="kw">const</span> { orderId } = req.data;
+      <span class="kw">try</span> {
+        <span class="comment">// Load the order</span>
+        <span class="kw">const</span> order = <span class="kw">await</span> <span class="type">SELECT</span>.<span class="fn">one</span>.<span class="fn">from</span>(Orders).<span class="fn">where</span>({ ID: orderId });
+        <span class="kw">if</span> (!order) <span class="kw">return</span> req.<span class="fn">error</span>(404, <span class="str">`Order </span>${orderId}<span class="str"> not found`</span>);
+
+        <span class="comment">// Business rule: only DRAFT can be submitted</span>
+        <span class="kw">if</span> (order.status !== <span class="str">'DRAFT'</span>) {
+          <span class="kw">return</span> req.<span class="fn">error</span>(409, <span class="str">`Cannot submit an order in status: </span>${order.status}<span class="str">`</span>);
+        }
+
+        <span class="comment">// Validate: must have at least one item</span>
+        <span class="kw">const</span> items = <span class="kw">await</span> <span class="type">SELECT</span>.<span class="fn">from</span>(OrderItems).<span class="fn">where</span>({ order_ID: orderId });
+        <span class="kw">if</span> (!items || items.length === 0) {
+          <span class="kw">return</span> req.<span class="fn">error</span>(422, <span class="str">'Cannot submit: order has no line items'</span>);
+        }
+
+        <span class="comment">// Update status</span>
+        <span class="kw">await</span> <span class="type">UPDATE</span>(Orders).<span class="fn">set</span>({ status: <span class="str">'SUBMITTED'</span> }).<span class="fn">where</span>({ ID: orderId });
+
+        <span class="comment">// Return updated order</span>
+        <span class="kw">return</span> <span class="kw">await</span> <span class="type">SELECT</span>.<span class="fn">one</span>.<span class="fn">from</span>(Orders).<span class="fn">where</span>({ ID: orderId });
+
+      } <span class="kw">catch</span>(err) {
+        req.logger.<span class="fn">error</span>(<span class="str">'submitOrder failed:'</span>, err);
+        <span class="kw">return</span> req.<span class="fn">error</span>(500, <span class="str">'Unexpected error during submit'</span>);
+      }
+    });
+
+    <span class="kw">this</span>.<span class="fn">on</span>(<span class="str">'approveOrder'</span>, <span class="kw">async</span> (req) => {
+      <span class="kw">const</span> { orderId } = req.data;
+      <span class="kw">const</span> order = <span class="kw">await</span> <span class="type">SELECT</span>.<span class="fn">one</span>.<span class="fn">from</span>(Orders).<span class="fn">where</span>({ ID: orderId });
+      <span class="kw">if</span> (!order) <span class="kw">return</span> req.<span class="fn">error</span>(404, <span class="str">'Order not found'</span>);
+      <span class="kw">if</span> (order.status !== <span class="str">'SUBMITTED'</span>) <span class="kw">return</span> req.<span class="fn">error</span>(409, <span class="str">'Only SUBMITTED orders can be approved'</span>);
+
+      <span class="kw">await</span> <span class="type">UPDATE</span>(Orders).<span class="fn">set</span>({ status: <span class="str">'APPROVED'</span> }).<span class="fn">where</span>({ ID: orderId });
+      <span class="kw">return</span> <span class="kw">await</span> <span class="type">SELECT</span>.<span class="fn">one</span>.<span class="fn">from</span>(Orders).<span class="fn">where</span>({ ID: orderId });
+    });
+
+    <span class="kw">this</span>.<span class="fn">on</span>(<span class="str">'rejectOrder'</span>, <span class="kw">async</span> (req) => {
+      <span class="kw">const</span> { orderId, reason } = req.data;
+      <span class="kw">const</span> order = <span class="kw">await</span> <span class="type">SELECT</span>.<span class="fn">one</span>.<span class="fn">from</span>(Orders).<span class="fn">where</span>({ ID: orderId });
+      <span class="kw">if</span> (!order) <span class="kw">return</span> req.<span class="fn">error</span>(404, <span class="str">'Order not found'</span>);
+
+      <span class="kw">await</span> <span class="type">UPDATE</span>(Orders)
+        .<span class="fn">set</span>({ status: <span class="str">'REJECTED'</span>, description: reason || order.description })
+        .<span class="fn">where</span>({ ID: orderId });
+      <span class="kw">return</span> <span class="kw">await</span> <span class="type">SELECT</span>.<span class="fn">one</span>.<span class="fn">from</span>(Orders).<span class="fn">where</span>({ ID: orderId });
+    });
+
+    <span class="kw">this</span>.<span class="fn">on</span>(<span class="str">'getOrderStats'</span>, <span class="kw">async</span> (req) => {
+      <span class="kw">const</span> stats = <span class="kw">await</span> <span class="type">SELECT</span><span class="str">`
+        SELECT
+          count(*) as total,
+          sum(case when status='DRAFT'     then 1 else 0 end) as draft,
+          sum(case when status='SUBMITTED' then 1 else 0 end) as submitted,
+          sum(case when status='APPROVED'  then 1 else 0 end) as approved
+        FROM my_Orders
+        WHERE IsActiveEntity = true
+      `</span>;
+      <span class="kw">return</span> stats[0] || { total:0, draft:0, submitted:0, approved:0, totalValue:0 };
+    });
+
+    <span class="comment">// Always call super.init() — registers default CRUD handlers</span>
+    <span class="kw">await</span> <span class="kw">super</span>.<span class="fn">init</span>();
+  }
+};</div>
+        </div>
+      </div>
+      <div class="callout c-warn">
+        <div class="callout-icon">⚠️</div>
+        <div class="callout-text"><strong>Critical:</strong> Always call <code>await super.init()</code> at the END of your init(). If you call it at the start, the default CRUD handlers will overwrite your custom handlers.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ STEP 6 — SECURITY ████ -->
+<div class="sec" id="sec-s6">
+  <div class="pg-head">
+    <div class="pg-eyebrow">Step 06 · Phase 2 — Backend</div>
+    <div class="pg-title">Security — XSUAA Configuration</div>
+    <div class="pg-sub">Define scopes, role templates, and role collections for JWT-based authorization.</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-orange">6.1</div>
+      <div class="step-title">xs-security.json — XSUAA definition</div>
+      <span class="step-tag tag-sec">SECURITY</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-why">⚡ The 3-tier model</div>
+        <ul class="blist">
+          <li><strong>Scope</strong> — smallest unit of permission. Goes inside the JWT token. Example: <code>OrderViewer</code></li>
+          <li><strong>Role-Template</strong> — groups scopes. Example: <code>OrderViewerRole</code> contains the <code>OrderViewer</code> scope</li>
+          <li><strong>Role-Collection</strong> — what admins assign to actual users in BTP Cockpit</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-label bl-what">📄 xs-security.json</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">xs-security.json</span></div>
+          <div class="term-body">{
+  <span class="key">"xsappname"</span>: <span class="str">"order-app"</span>,
+  <span class="comment">// "dedicated" = one XSUAA instance per BTP subaccount</span>
+  <span class="comment">// "shared" = multi-tenant (used for SaaS apps)</span>
+  <span class="key">"tenant-mode"</span>: <span class="str">"dedicated"</span>,
+
+  <span class="key">"scopes"</span>: [
+    {
+      <span class="key">"name"</span>: <span class="str">"$XSAPPNAME.OrderViewer"</span>,
+      <span class="comment">// $XSAPPNAME is replaced by XSUAA with the actual app name at runtime</span>
+      <span class="comment">// This prevents scope collisions across multiple apps</span>
+      <span class="key">"description"</span>: <span class="str">"Can read orders and customers"</span>
+    },
+    {
+      <span class="key">"name"</span>: <span class="str">"$XSAPPNAME.OrderManager"</span>,
+      <span class="key">"description"</span>: <span class="str">"Can create, update, approve/reject orders"</span>
+    }
+  ],
+
+  <span class="key">"role-templates"</span>: [
+    {
+      <span class="key">"name"</span>: <span class="str">"OrderViewer"</span>,
+      <span class="key">"description"</span>: <span class="str">"View orders only"</span>,
+      <span class="key">"scope-references"</span>: [<span class="str">"$XSAPPNAME.OrderViewer"</span>]
+    },
+    {
+      <span class="key">"name"</span>: <span class="str">"OrderManager"</span>,
+      <span class="key">"description"</span>: <span class="str">"Manage all orders"</span>,
+      <span class="comment">// Manager gets BOTH viewer and manager scopes</span>
+      <span class="key">"scope-references"</span>: [
+        <span class="str">"$XSAPPNAME.OrderViewer"</span>,
+        <span class="str">"$XSAPPNAME.OrderManager"</span>
+      ]
+    }
+  ],
+
+  <span class="key">"role-collections"</span>: [
+    {
+      <span class="key">"name"</span>: <span class="str">"Order Viewer"</span>,
+      <span class="key">"description"</span>: <span class="str">"Assign to read-only users"</span>,
+      <span class="key">"role-template-references"</span>: [
+        <span class="str">"$XSAPPNAME.OrderViewer"</span>
+      ]
+    },
+    {
+      <span class="key">"name"</span>: <span class="str">"Order Manager"</span>,
+      <span class="key">"description"</span>: <span class="str">"Assign to managers who approve orders"</span>,
+      <span class="key">"role-template-references"</span>: [
+        <span class="str">"$XSAPPNAME.OrderManager"</span>
+      ]
+    }
+  ]
+}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ STEP 7 — FIORI UI ████ -->
+<div class="sec" id="sec-s7">
+  <div class="pg-head">
+    <div class="pg-eyebrow">Step 07 · Phase 3 — Frontend</div>
+    <div class="pg-title">Fiori Elements UI</div>
+    <div class="pg-sub">Auto-generated List Report + Object Page UI from CDS annotations.</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-teal">7.1</div>
+      <div class="step-title">app/orders/webapp/manifest.json</div>
+      <span class="step-tag tag-ui">UI</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-what">📄 app/orders/webapp/manifest.json</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">app/orders/webapp/manifest.json</span></div>
+          <div class="term-body">{
+  <span class="key">"_version"</span>: <span class="str">"1.65.0"</span>,
+  <span class="key">"sap.app"</span>: {
+    <span class="key">"id"</span>: <span class="str">"order.app.orders"</span>,
+    <span class="key">"type"</span>: <span class="str">"application"</span>,
+    <span class="key">"title"</span>: <span class="str">"Order Management"</span>,
+    <span class="key">"dataSources"</span>: {
+      <span class="key">"mainService"</span>: {
+        <span class="comment">// This path is relative to the app router base URL</span>
+        <span class="key">"uri"</span>: <span class="str">"/odata/v4/OrderService/"</span>,
+        <span class="key">"type"</span>: <span class="str">"OData"</span>,
+        <span class="key">"settings"</span>: { <span class="key">"odataVersion"</span>: <span class="str">"4.0"</span> }
+      }
+    }
+  },
+  <span class="key">"sap.ui"</span>: { <span class="key">"technology"</span>: <span class="str">"UI5"</span> },
+  <span class="key">"sap.ui5"</span>: {
+    <span class="key">"dependencies"</span>: {
+      <span class="key">"libs"</span>: {
+        <span class="key">"sap.fe.templates"</span>: {}   <span class="comment">// Fiori Elements V4 library</span>
+      }
+    },
+    <span class="key">"models"</span>: {
+      <span class="key">""</span>: {
+        <span class="key">"dataSource"</span>: <span class="str">"mainService"</span>,
+        <span class="key">"settings"</span>: {
+          <span class="key">"synchronizationMode"</span>: <span class="str">"None"</span>,
+          <span class="key">"operationMode"</span>: <span class="str">"Server"</span>,
+          <span class="key">"autoExpandSelect"</span>: <span class="val">true</span>  <span class="comment">// auto-adds $select and $expand</span>
+        }
+      }
+    },
+    <span class="key">"routing"</span>: {
+      <span class="key">"routes"</span>: [
+        {
+          <span class="key">"pattern"</span>: <span class="str">":?query:"</span>,
+          <span class="key">"name"</span>: <span class="str">"OrdersList"</span>,
+          <span class="key">"target"</span>: <span class="str">"OrdersList"</span>
+        },
+        {
+          <span class="key">"pattern"</span>: <span class="str">"Orders({key}):?query:"</span>,
+          <span class="key">"name"</span>: <span class="str">"OrdersObjectPage"</span>,
+          <span class="key">"target"</span>: <span class="str">"OrdersObjectPage"</span>
+        }
+      ],
+      <span class="key">"targets"</span>: {
+        <span class="key">"OrdersList"</span>: {
+          <span class="comment">// Fiori Elements List Report template</span>
+          <span class="key">"type"</span>: <span class="str">"Component"</span>,
+          <span class="key">"id"</span>: <span class="str">"OrdersList"</span>,
+          <span class="key">"name"</span>: <span class="str">"sap.fe.templates.ListReport"</span>,
+          <span class="key">"options"</span>: {
+            <span class="key">"settings"</span>: {
+              <span class="key">"entitySet"</span>: <span class="str">"Orders"</span>,
+              <span class="key">"variantManagement"</span>: <span class="str">"Page"</span>,
+              <span class="key">"initialLoad"</span>: <span class="str">"Enabled"</span>,
+              <span class="key">"navigation"</span>: {
+                <span class="key">"Orders"</span>: { <span class="key">"detail"</span>: { <span class="key">"route"</span>: <span class="str">"OrdersObjectPage"</span> } }
+              }
+            }
+          }
+        },
+        <span class="key">"OrdersObjectPage"</span>: {
+          <span class="key">"type"</span>: <span class="str">"Component"</span>,
+          <span class="key">"id"</span>: <span class="str">"OrdersObjectPage"</span>,
+          <span class="key">"name"</span>: <span class="str">"sap.fe.templates.ObjectPage"</span>,
+          <span class="key">"options"</span>: {
+            <span class="key">"settings"</span>: { <span class="key">"entitySet"</span>: <span class="str">"Orders"</span> }
+          }
+        }
+      }
+    }
+  }
+}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-teal">7.2</div>
+      <div class="step-title">app/orders/webapp/index.html</div>
+      <span class="step-tag tag-ui">UI</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-what">📄 app/orders/webapp/index.html</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">app/orders/webapp/index.html</span></div>
+          <div class="term-body">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"/&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;
+  &lt;title&gt;Order Management&lt;/title&gt;
+  &lt;script id="sap-ui-bootstrap"
+    src="https://ui5.sap.com/1.120/resources/sap-ui-core.js"
+    data-sap-ui-theme="sap_horizon"
+    data-sap-ui-compatVersion="edge"
+    data-sap-ui-async="true"
+    data-sap-ui-frameOptions="allow"
+    data-sap-ui-resourceroots='{
+      "order.app.orders": "./"
+    }'&gt;
+  &lt;/script&gt;
+  &lt;script&gt;
+    sap.ui.getCore().attachInit(function() {
+      sap.ui.require(["sap/m/Shell","sap/ui/core/ComponentContainer"],
+        function(Shell, ComponentContainer) {
+          new Shell({
+            app: new ComponentContainer({
+              height: "100%",
+              name: "order.app.orders",
+              settings: { id: "order-app" },
+              async: true
+            })
+          }).placeAt("content");
+        }
+      );
+    });
+  &lt;/script&gt;
+&lt;/head&gt;
+&lt;body class="sapUiBody" id="content"&gt;&lt;/body&gt;
+&lt;/html&gt;</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-teal">7.3</div>
+      <div class="step-title">app/orders/annotations.cds — UI annotations</div>
+      <span class="step-tag tag-ui">UI</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-why">⚡ Why annotations</div>
+        <div class="prose">Fiori Elements reads these annotations to know what columns to show, what buttons to add, what sections to display — zero JavaScript or XML needed. Change an annotation → UI updates instantly.</div>
+      </div>
+      <div class="block">
+        <div class="block-label bl-what">📄 app/orders/annotations.cds</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">app/orders/annotations.cds</span></div>
+          <div class="term-body"><span class="kw">using</span> <span class="type">OrderService</span> <span class="kw">from</span> <span class="str">'../../srv/service'</span>;
+
+<span class="ann">annotate</span> <span class="type">OrderService.Orders</span> <span class="kw">with</span> <span class="ann">@(</span>
+  <span class="comment">// ── List page header ──────────────────────────</span>
+  <span class="ann">UI.HeaderInfo</span>: {
+    <span class="key">TypeName</span>:       <span class="str">'Order'</span>,
+    <span class="key">TypeNamePlural</span>: <span class="str">'Orders'</span>,
+    <span class="key">Title</span>:          { <span class="key">Value</span>: <span class="fn">orderNo</span> },
+    <span class="key">Description</span>:   { <span class="key">Value</span>: <span class="fn">status</span>  }
+  },
+
+  <span class="comment">// ── Table columns on List page ────────────────</span>
+  <span class="ann">UI.LineItem</span>: [
+    { <span class="key">Value</span>: <span class="fn">orderNo</span>,                <span class="key">Label</span>: <span class="str">'Order #'</span>     },
+    { <span class="key">Value</span>: <span class="fn">customer</span>.<span class="fn">name</span>,          <span class="key">Label</span>: <span class="str">'Customer'</span>    },
+    { <span class="key">Value</span>: <span class="fn">status</span>,   <span class="key">Criticality</span>: <span class="fn">criticality</span>,   <span class="key">Label</span>: <span class="str">'Status'</span> },
+    { <span class="key">Value</span>: <span class="fn">totalAmount</span>,            <span class="key">Label</span>: <span class="str">'Total'</span>       },
+    { <span class="key">Value</span>: <span class="fn">createdAt</span>,              <span class="key">Label</span>: <span class="str">'Created'</span>     },
+    <span class="comment">// Button: submit action in each row</span>
+    {
+      <span class="key">$Type</span>:  <span class="str">'UI.DataFieldForAction'</span>,
+      <span class="key">Action</span>: <span class="str">'OrderService.EntityContainer/submitOrder'</span>,
+      <span class="key">Label</span>:  <span class="str">'Submit'</span>
+    }
+  ],
+
+  <span class="comment">// ── Filter bar fields ─────────────────────────</span>
+  <span class="ann">UI.SelectionFields</span>: [ <span class="fn">status</span>, <span class="fn">customer_ID</span>, <span class="fn">createdAt</span> ],
+
+  <span class="comment">// ── Object page sections ──────────────────────</span>
+  <span class="ann">UI.Facets</span>: [
+    {
+      <span class="key">$Type</span>:  <span class="str">'UI.ReferenceFacet'</span>,
+      <span class="key">ID</span>:     <span class="str">'GeneralInfo'</span>,
+      <span class="key">Label</span>:  <span class="str">'General Information'</span>,
+      <span class="key">Target</span>: <span class="str">'@UI.FieldGroup#Main'</span>
+    },
+    {
+      <span class="key">$Type</span>:  <span class="str">'UI.ReferenceFacet'</span>,
+      <span class="key">ID</span>:     <span class="str">'LineItems'</span>,
+      <span class="key">Label</span>:  <span class="str">'Line Items'</span>,
+      <span class="comment">// points to items navigation property</span>
+      <span class="key">Target</span>: <span class="str">'items/@UI.LineItem'</span>
+    }
+  ],
+
+  <span class="comment">// ── Fields in General Information section ─────</span>
+  <span class="ann">UI.FieldGroup #Main</span>: {
+    <span class="key">Data</span>: [
+      { <span class="key">Value</span>: <span class="fn">orderNo</span>,      <span class="key">Label</span>: <span class="str">'Order Number'</span>   },
+      { <span class="key">Value</span>: <span class="fn">customer_ID</span>,  <span class="key">Label</span>: <span class="str">'Customer'</span>       },
+      { <span class="key">Value</span>: <span class="fn">status</span>,       <span class="key">Label</span>: <span class="str">'Status'</span>         },
+      { <span class="key">Value</span>: <span class="fn">currency</span>,     <span class="key">Label</span>: <span class="str">'Currency'</span>       },
+      { <span class="key">Value</span>: <span class="fn">totalAmount</span>,  <span class="key">Label</span>: <span class="str">'Total Amount'</span>   },
+      { <span class="key">Value</span>: <span class="fn">description</span>,  <span class="key">Label</span>: <span class="str">'Description'</span>    }
+    ]
+  }
+<span class="ann">)</span>;
+
+<span class="comment">// ── Order Items columns ────────────────────────</span>
+<span class="ann">annotate</span> <span class="type">OrderService.OrderItems</span> <span class="kw">with</span> <span class="ann">@(</span>
+  <span class="ann">UI.LineItem</span>: [
+    { <span class="key">Value</span>: <span class="fn">product</span>,    <span class="key">Label</span>: <span class="str">'Product'</span>     },
+    { <span class="key">Value</span>: <span class="fn">quantity</span>,   <span class="key">Label</span>: <span class="str">'Quantity'</span>    },
+    { <span class="key">Value</span>: <span class="fn">unitPrice</span>,  <span class="key">Label</span>: <span class="str">'Unit Price'</span>  },
+    { <span class="key">Value</span>: <span class="fn">lineTotal</span>,  <span class="key">Label</span>: <span class="str">'Line Total'</span>  }
+  ]
+<span class="ann">)</span>;
+
+<span class="comment">// ── Customer value help (dropdown in order form) ─</span>
+<span class="ann">annotate</span> <span class="type">OrderService.Orders</span> {
+  customer <span class="ann">@(</span><span class="key">Common.ValueList</span>: {
+    <span class="key">CollectionPath</span>: <span class="str">'Customers'</span>,
+    <span class="key">Parameters</span>: [
+      { <span class="key">$Type</span>: <span class="str">'Common.ValueListParameterOut'</span>,
+        <span class="key">LocalDataProperty</span>: <span class="fn">customer_ID</span>,
+        <span class="key">ValueListProperty</span>: <span class="str">'ID'</span> },
+      { <span class="key">$Type</span>: <span class="str">'Common.ValueListParameterDisplayOnly'</span>,
+        <span class="key">ValueListProperty</span>: <span class="str">'name'</span> }
+    ]
+  }<span class="ann">)</span>;
+}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ STEP 8 — APP ROUTER ████ -->
+<div class="sec" id="sec-s8">
+  <div class="pg-head">
+    <div class="pg-eyebrow">Step 08 · Phase 3 — Frontend</div>
+    <div class="pg-title">App Router Setup</div>
+    <div class="pg-sub">The front door — handles auth redirect, token forwarding, and routing to UI and backend.</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-teal">8.1</div>
+      <div class="step-title">approuter/xs-app.json</div>
+      <span class="step-tag tag-sec">SECURITY</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-why">⚡ Why each route exists</div>
+        <ul class="blist">
+          <li>Route 1 (<code>/odata/v4/</code>) — proxy to CAP backend. <code>authenticationType: xsuaa</code> means App Router attaches the JWT</li>
+          <li>Route 2 (<code>/app/</code>) — serves static UI5 files from HTML5 Repository</li>
+          <li>Route 3 (<code>/</code>) — default redirect to the main app</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-label bl-what">📄 approuter/xs-app.json</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">approuter/xs-app.json</span></div>
+          <div class="term-body">{
+  <span class="key">"welcomeFile"</span>: <span class="str">"/app/orders/index.html"</span>,
+  <span class="key">"authenticationMethod"</span>: <span class="str">"route"</span>,
+  <span class="key">"logout"</span>: {
+    <span class="key">"logoutEndpoint"</span>: <span class="str">"/do/logout"</span>
+  },
+  <span class="key">"routes"</span>: [
+    {
+      <span class="comment">// All OData API calls → forwarded to CAP backend</span>
+      <span class="key">"source"</span>: <span class="str">"^/odata/(.*)$"</span>,
+      <span class="key">"destination"</span>: <span class="str">"srv-api"</span>,
+      <span class="key">"authenticationType"</span>: <span class="str">"xsuaa"</span>,
+      <span class="comment">// csrfProtection: App Router fetches CSRF token for write operations</span>
+      <span class="key">"csrfProtection"</span>: <span class="val">true</span>
+    },
+    {
+      <span class="comment">// UI5 app files → served from HTML5 Repository</span>
+      <span class="key">"source"</span>: <span class="str">"^/app/orders/(.*)$"</span>,
+      <span class="key">"target"</span>: <span class="str">"$1"</span>,
+      <span class="key">"service"</span>: <span class="str">"html5-apps-repo-rt"</span>,
+      <span class="key">"authenticationType"</span>: <span class="str">"xsuaa"</span>
+    },
+    {
+      <span class="comment">// Catch-all: public resources (icons, CSS) — no auth needed</span>
+      <span class="key">"source"</span>: <span class="str">"^/(.*)$"</span>,
+      <span class="key">"target"</span>: <span class="str">"$1"</span>,
+      <span class="key">"authenticationType"</span>: <span class="str">"none"</span>
+    }
+  ]
+}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-teal">8.2</div>
+      <div class="step-title">approuter/package.json</div>
+      <span class="step-tag tag-setup">SETUP</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-what">📄 approuter/package.json</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">approuter/package.json</span></div>
+          <div class="term-body">{
+  <span class="key">"name"</span>: <span class="str">"order-approuter"</span>,
+  <span class="key">"version"</span>: <span class="str">"1.0.0"</span>,
+  <span class="key">"scripts"</span>: {
+    <span class="key">"start"</span>: <span class="str">"node node_modules/@sap/approuter/approuter.js"</span>
+  },
+  <span class="key">"dependencies"</span>: {
+    <span class="key">"@sap/approuter"</span>: <span class="str">"^16"</span>
+  }
+}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ STEP 9 — RUN LOCALLY ████ -->
+<div class="sec" id="sec-s9">
+  <div class="pg-head">
+    <div class="pg-eyebrow">Step 09 · Phase 4 — Local Dev</div>
+    <div class="pg-title">Run & Test Locally</div>
+    <div class="pg-sub">Everything runs on your laptop — no BTP account needed at this stage.</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-purple">9.1</div>
+      <div class="step-title">Start local dev server</div>
+      <span class="step-tag tag-code">CODE</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">Terminal — in project root</span></div>
+          <div class="term-body"><span class="cmd">cds watch</span>
+
+<span class="comment"># Expected output:</span>
+<span class="out">[cds] - loaded model from 3 file(s):
+  db/schema.cds, srv/service.cds, app/orders/annotations.cds
+
+[cds] - connect to db > sqlite { url: ':memory:' }
+[cds] - serving OrderService { path: '/odata/v4/OrderService' }
+[cds] - server listening on { url: 'http://localhost:4004' }</span>
+
+<span class="comment"># Open browser: http://localhost:4004</span>
+<span class="comment"># You see the CAP welcome page with all exposed services and entities</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-purple">9.2</div>
+      <div class="step-title">Test APIs with REST client or curl</div>
+      <span class="step-tag tag-code">CODE</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-what">Create a test.http file in project root</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">test.http — VS Code REST Client</span></div>
+          <div class="term-body"><span class="comment">### Read all orders (as alice = manager)</span>
+GET http://localhost:4004/odata/v4/OrderService/Orders
+Authorization: Basic alice:alice
+
+###
+<span class="comment">### Create a customer</span>
+POST http://localhost:4004/odata/v4/OrderService/Customers
+Content-Type: application/json
+Authorization: Basic alice:alice
+
+{
+  "name": "ACME Corp",
+  "email": "contact@acme.com",
+  "city": "Mumbai",
+  "country": "IN"
+}
+
+###
+<span class="comment">### Create an order with line items (deep insert)</span>
+POST http://localhost:4004/odata/v4/OrderService/Orders
+Content-Type: application/json
+Authorization: Basic alice:alice
+
+{
+  "customer_ID": "PASTE-CUSTOMER-UUID-HERE",
+  "description": "First test order",
+  "items": [
+    { "product": "Laptop",  "quantity": 2, "unitPrice": 75000 },
+    { "product": "Monitor", "quantity": 1, "unitPrice": 25000 }
+  ]
+}
+
+###
+<span class="comment">### Submit an order (custom action)</span>
+POST http://localhost:4004/odata/v4/OrderService/submitOrder
+Content-Type: application/json
+Authorization: Basic alice:alice
+
+{ "orderId": "PASTE-ORDER-UUID-HERE" }
+
+###
+<span class="comment">### Get stats (function)</span>
+GET http://localhost:4004/odata/v4/OrderService/getOrderStats()
+Authorization: Basic alice:alice
+
+###
+<span class="comment">### Test role restriction — bob is viewer only</span>
+<span class="comment">### This should return 403 Forbidden</span>
+POST http://localhost:4004/odata/v4/OrderService/Customers
+Content-Type: application/json
+Authorization: Basic bob:bob
+
+{ "name": "Should Fail" }</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ STEP 10 — SEED DATA ████ -->
+<div class="sec" id="sec-s10">
+  <div class="pg-head">
+    <div class="pg-eyebrow">Step 10 · Phase 4 — Local Dev</div>
+    <div class="pg-title">Seed Data & Mock Auth</div>
+    <div class="pg-sub">Pre-load data for local testing so you always have something to work with.</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-purple">10.1</div>
+      <div class="step-title">CSV seed data files</div>
+      <span class="step-tag tag-db">DATA</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-why">⚡ Why</div>
+        <div class="prose">CAP automatically loads CSV files from <code>db/data/</code> into SQLite when you run <code>cds watch</code>. The naming must exactly match <code>namespace.EntityName.csv</code>.</div>
+      </div>
+      <div class="block">
+        <div class="block-label bl-what">📄 db/data/my.Customers.csv</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">db/data/my.Customers.csv</span></div>
+          <div class="term-body">ID,name,email,city,country
+c1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6,ACME Corp,contact@acme.com,Mumbai,IN
+d2e3f4a5-b6c7-d8e9-f0a1-b2c3d4e5f6a7,TechStart Ltd,info@techstart.io,Bangalore,IN
+e3f4a5b6-c7d8-e9f0-a1b2-c3d4e5f6a7b8,Global Trade Inc,hello@globaltrade.com,Delhi,IN</div>
+        </div>
+      </div>
+      <div class="block">
+        <div class="block-label bl-what">📄 db/data/my.Orders.csv</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">db/data/my.Orders.csv</span></div>
+          <div class="term-body">ID,orderNo,customer_ID,status,description,currency,createdBy
+a1b2c3d4-e5f6-a7b8-c9d0-e1f2a3b4c5d6,ORD-20241101-0001,c1a2b3c4-d5e6-f7a8-b9c0-d1e2f3a4b5c6,SUBMITTED,Office supplies order,INR,alice
+b2c3d4e5-f6a7-b8c9-d0e1-f2a3b4c5d6e7,ORD-20241102-0002,d2e3f4a5-b6c7-d8e9-f0a1-b2c3d4e5f6a7,DRAFT,IT equipment order,INR,alice</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ STEP 11 — MTA ████ -->
+<div class="sec" id="sec-s11">
+  <div class="pg-head">
+    <div class="pg-eyebrow">Step 11 · Phase 5 — Deploy</div>
+    <div class="pg-title">MTA Deployment Descriptor</div>
+    <div class="pg-sub">The blueprint that tells Cloud Foundry what to create, in what order, and how to connect everything.</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-yellow">11.1</div>
+      <div class="step-title">mta.yaml — Complete deployment config</div>
+      <span class="step-tag tag-deploy">DEPLOY</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-why">⚡ Deployment order (automatic)</div>
+        <ul class="blist">
+          <li>CF first creates all <strong>resources</strong> (HANA HDI, XSUAA, HTML5 repo) — these are cloud services</li>
+          <li>Then deploys <strong>db deployer</strong> — pushes schema to HANA</li>
+          <li>Then deploys <strong>srv module</strong> (CAP backend) and <strong>approuter</strong> in parallel</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-label bl-what">📄 mta.yaml</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">mta.yaml</span></div>
+          <div class="term-body">_schema-version: <span class="str">'3.1'</span>
+ID: order-app
+version: 1.0.0
+description: Order Management Application on SAP BTP
+
+modules:
+
+  <span class="comment"># ── 1. APP ROUTER ───────────────────────────────</span>
+  <span class="comment"># This is the ONLY module users hit directly</span>
+  - name: order-app-approuter
+    type: approuter.nodejs
+    path: approuter/
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: order-app-xsuaa        <span class="comment"># for login/logout</span>
+      - name: order-app-html5-runtime <span class="comment"># serve UI files</span>
+      - name: srv-api                 <span class="comment"># proxy to backend</span>
+    properties:
+      TENANT_HOST_PATTERN: <span class="str">"^(.*)-${default-uri}"</span>
+
+  <span class="comment"># ── 2. CAP BACKEND (srv module) ─────────────────</span>
+  - name: order-app-srv
+    type: nodejs
+    path: gen/srv                     <span class="comment"># uses compiled output</span>
+    parameters:
+      buildpack: nodejs_buildpack
+      memory: 512M
+      disk-quota: 512M
+    requires:
+      - name: order-app-db            <span class="comment"># HANA HDI connection</span>
+      - name: order-app-xsuaa         <span class="comment"># JWT validation</span>
+    provides:
+      - name: srv-api                  <span class="comment"># expose URL to approuter</span>
+        properties:
+          url: <span class="str">'${default-url}'</span>    <span class="comment"># CF auto-generates this</span>
+    build-parameters:
+      builder: npm
+      build-result: .
+      npm-ci: true
+
+  <span class="comment"># ── 3. HANA DB DEPLOYER ──────────────────────────</span>
+  <span class="comment"># This module runs ONCE to push schema to HANA, then stops</span>
+  - name: order-app-db-deployer
+    type: hdb
+    path: gen/db                      <span class="comment"># compiled DB artifacts</span>
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: order-app-db
+
+  <span class="comment"># ── 4. UI DEPLOYER ───────────────────────────────</span>
+  <span class="comment"># Pushes UI5 app files to HTML5 Repository</span>
+  - name: order-app-ui-deployer
+    type: com.sap.application.content
+    path: .
+    requires:
+      - name: order-app-html5-host
+        parameters:
+          content-target: true
+    build-parameters:
+      build-result: resources/
+      requires:
+        - artifacts:
+            - order.app.orders.zip   <span class="comment"># UI5 app zipped</span>
+          name: order-app-orders-ui
+          target-path: resources/
+  
+  - name: order-app-orders-ui
+    type: html5
+    path: app/orders
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm run build              <span class="comment"># builds UI5 app</span>
+      supported-platforms: []
+
+resources:
+  <span class="comment"># ── HANA HDI Container ────────────────────────</span>
+  - name: order-app-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+
+  <span class="comment"># ── XSUAA service ─────────────────────────────</span>
+  - name: order-app-xsuaa
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: xs-security.json        <span class="comment"># our security definition</span>
+      config:
+        xsappname: order-app
+        tenant-mode: dedicated
+
+  <span class="comment"># ── HTML5 Repository (host = store, rt = serve) ─</span>
+  - name: order-app-html5-host
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-host
+
+  - name: order-app-html5-runtime
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: html5-apps-repo
+      service-plan: app-runtime</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ STEP 12 — BUILD & DEPLOY ████ -->
+<div class="sec" id="sec-s12">
+  <div class="pg-head">
+    <div class="pg-eyebrow">Step 12 · Phase 5 — Deploy</div>
+    <div class="pg-title">Build & Deploy to SAP BTP</div>
+    <div class="pg-sub">Compile, package, and push to Cloud Foundry. Run these commands in order.</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-yellow">12.1</div>
+      <div class="step-title">Pre-deployment: Build CDS for HANA</div>
+      <span class="step-tag tag-deploy">DEPLOY</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-why">⚡ Why cds build</div>
+        <div class="prose"><code>cds build --for hana</code> compiles your <code>.cds</code> files into: HANA <code>.hdbcds</code> artifacts (in <code>gen/db/</code>) and the compiled service in <code>gen/srv/</code>. You deploy <code>gen/</code>, not the source.</div>
+      </div>
+      <div class="block">
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">Terminal — Step by step</span></div>
+          <div class="term-body"><span class="comment"># STEP 1: Compile CDS → HANA artifacts</span>
+<span class="cmd">cds build --for hana</span>
+<span class="out"># Creates: gen/db/ (HANA tables) and gen/srv/ (compiled service)</span>
+
+<span class="comment"># STEP 2: Login to Cloud Foundry</span>
+<span class="cmd">cf login -a https://api.cf.eu10.hana.ondemand.com</span>
+<span class="comment"># Enter your BTP email and password</span>
+<span class="comment"># Select your org and space (e.g. dev)</span>
+
+<span class="comment"># STEP 3: Build the MTA package (.mtar file)</span>
+<span class="cmd">mbt build -p cf</span>
+<span class="out"># Creates: mta_archives/order-app_1.0.0.mtar</span>
+<span class="out"># This is a single zip with all modules inside</span>
+
+<span class="comment"># STEP 4: Deploy to Cloud Foundry</span>
+<span class="cmd">cf deploy mta_archives/order-app_1.0.0.mtar</span>
+<span class="out"># This will:</span>
+<span class="out"># → Create HANA HDI container</span>
+<span class="out"># → Create XSUAA instance (reads xs-security.json)</span>
+<span class="out"># → Create HTML5 Repository instances</span>
+<span class="out"># → Deploy DB schema to HANA</span>
+<span class="out"># → Start CAP backend</span>
+<span class="out"># → Start App Router</span>
+<span class="out"># → Upload UI5 app to HTML5 Repository</span>
+
+<span class="comment"># STEP 5: Check deployment status</span>
+<span class="cmd">cf apps</span>
+<span class="out">name                      state   instances  memory   disk
+order-app-approuter       started 1/1        256M     256M
+order-app-srv             started 1/1        512M     512M</span>
+
+<span class="comment"># STEP 6: Get your app URL</span>
+<span class="cmd">cf app order-app-approuter</span>
+<span class="out">routes: order-app-approuter.cfapps.eu10.hana.ondemand.com</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-yellow">12.2</div>
+      <div class="step-title">Post-deploy: Assign roles in BTP Cockpit</div>
+      <span class="step-tag tag-sec">SECURITY</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="block-label bl-how">Steps in BTP Cockpit</div>
+        <ul class="blist">
+          <li>Go to BTP Cockpit → your subaccount → <strong>Security → Role Collections</strong></li>
+          <li>You will see <strong>Order Viewer</strong> and <strong>Order Manager</strong> role collections created by XSUAA from your xs-security.json</li>
+          <li>Click <strong>Order Manager</strong> → <strong>Edit</strong> → <strong>Users</strong> tab → <strong>Add your email</strong></li>
+          <li>Save. Wait 1–2 minutes for the cache to refresh</li>
+          <li>Open the app URL from Step 12.1 → you should see the Fiori login page → login → Orders list appears</li>
+        </ul>
+      </div>
+      <div class="callout c-warn">
+        <div class="callout-icon">⚠️</div>
+        <div class="callout-text"><strong>Without assigning roles:</strong> You will see a blank screen or 403 error after login. Role assignment is mandatory for any user to access the app.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ STEP 13 — VERIFY ████ -->
+<div class="sec" id="sec-s13">
+  <div class="pg-head">
+    <div class="pg-eyebrow">Step 13 · Phase 5 — Deploy</div>
+    <div class="pg-title">Verify & Debug Production</div>
+    <div class="pg-sub">Commands and techniques to confirm everything is working in CF.</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-red">13.1</div>
+      <div class="step-title">Essential CF debug commands</div>
+      <span class="step-tag tag-deploy">DEPLOY</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">Terminal</span></div>
+          <div class="term-body"><span class="comment"># View live logs (essential for debugging startup errors)</span>
+<span class="cmd">cf logs order-app-srv --recent</span>
+
+<span class="comment"># Check what services are bound and env vars</span>
+<span class="cmd">cf env order-app-srv</span>
+<span class="comment"># Look for VCAP_SERVICES section — should have hana, xsuaa entries</span>
+
+<span class="comment"># Check app health</span>
+<span class="cmd">cf app order-app-srv</span>
+
+<span class="comment"># Scale to 2 instances (load balancing)</span>
+<span class="cmd">cf scale order-app-srv -i 2</span>
+
+<span class="comment"># Blue-green deploy (zero downtime)</span>
+<span class="cmd">cf deploy mta_archives/order-app_1.0.0.mtar --strategy blue-green</span>
+
+<span class="comment"># Restart without redeploying (if app crashed)</span>
+<span class="cmd">cf restart order-app-srv</span>
+
+<span class="comment"># SSH into the running container to debug</span>
+<span class="cmd">cf ssh order-app-srv</span>
+
+<span class="comment"># Check all services created</span>
+<span class="cmd">cf services</span>
+<span class="out">name                         service    plan
+order-app-db                 hana       hdi-shared
+order-app-xsuaa              xsuaa      application
+order-app-html5-host         html5-...  app-host
+order-app-html5-runtime      html5-...  app-runtime</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ FULL FILE REFERENCE ████ -->
+<div class="sec" id="sec-ref">
+  <div class="pg-head">
+    <div class="pg-eyebrow">Quick Reference</div>
+    <div class="pg-title">Complete File Reference</div>
+    <div class="pg-sub">Every file in the project, what it does, and when to edit it.</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-teal">📁</div>
+      <div class="step-title">All files explained</div>
+      <span class="step-tag tag-code">REFERENCE</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <ul class="blist">
+          <li><code>db/schema.cds</code> — <strong>entities (DB tables)</strong>. Edit when you add new tables or fields</li>
+          <li><code>db/data/*.csv</code> — <strong>seed data</strong>. Loaded automatically by <code>cds watch</code> into SQLite</li>
+          <li><code>srv/service.cds</code> — <strong>API contract</strong>. Which entities are exposed, which actions exist, who can access what</li>
+          <li><code>srv/service.js</code> — <strong>business logic</strong>. before/on/after handlers, custom actions, validation</li>
+          <li><code>app/orders/annotations.cds</code> — <strong>UI config</strong>. Table columns, filter fields, object page sections, buttons</li>
+          <li><code>app/orders/webapp/manifest.json</code> — <strong>UI5 app config</strong>. Routes, OData data source, models</li>
+          <li><code>app/orders/webapp/index.html</code> — <strong>UI entry point</strong>. Bootstraps UI5, rarely edited</li>
+          <li><code>approuter/xs-app.json</code> — <strong>routing rules</strong>. Which URL goes where, auth method per route</li>
+          <li><code>xs-security.json</code> — <strong>XSUAA security definition</strong>. Scopes, role-templates, role-collections</li>
+          <li><code>mta.yaml</code> — <strong>deployment blueprint</strong>. All modules and services wired together</li>
+          <li><code>package.json</code> (root) — <strong>Node deps + CAP config</strong>. Database type, auth mode, profiles</li>
+          <li><code>.cdsrc.json</code> — <strong>local dev overrides</strong>. Mock users, SQLite config. NEVER commit secrets here</li>
+        </ul>
+      </div>
+      <div class="block">
+        <div class="block-label bl-how">🔄 Typical development loop</div>
+        <div class="terminal">
+          <div class="term-bar"><div class="term-dots"><div class="term-dot td-r"></div><div class="term-dot td-y"></div><div class="term-dot td-g"></div></div><span class="term-label">Daily workflow</span></div>
+          <div class="term-body"><span class="comment"># 1. Start local server (stays running, auto-reloads)</span>
+<span class="cmd">cds watch</span>
+
+<span class="comment"># 2. Edit any .cds or .js file → server auto-reloads</span>
+
+<span class="comment"># 3. Test with REST Client or browser at http://localhost:4004</span>
+
+<span class="comment"># 4. When ready to deploy:</span>
+<span class="cmd">cds build --for hana</span>
+<span class="cmd">mbt build -p cf</span>
+<span class="cmd">cf deploy mta_archives/order-app_1.0.0.mtar</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ ERRORS ████ -->
+<div class="sec" id="sec-errors">
+  <div class="pg-head">
+    <div class="pg-eyebrow">Quick Reference</div>
+    <div class="pg-title">Common Errors & Fixes</div>
+    <div class="pg-sub">The most frequent issues developers hit and exactly how to fix them.</div>
+    <div class="pg-line"></div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-red">E1</div>
+      <div class="step-title">401 Unauthorized after deployment</div>
+      <span class="step-tag tag-sec">SECURITY</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <ul class="blist">
+          <li><strong>Check:</strong> <code>cf env order-app-srv</code> — is <code>xsuaa</code> in VCAP_SERVICES? If not → bind: <code>cf bind-service order-app-srv order-app-xsuaa</code></li>
+          <li><strong>Check:</strong> Decode JWT at jwt.io. Is <code>iss</code> matching your XSUAA URL? Is <code>exp</code> in the future?</li>
+          <li><strong>Check:</strong> Did <code>xsappname</code> in xs-security.json change? Old tokens have old scope prefix → users must re-login</li>
+          <li><strong>Fix:</strong> <code>cf restage order-app-srv</code> after binding a service</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-red">E2</div>
+      <div class="step-title">403 Forbidden — user logged in but gets no data</div>
+      <span class="step-tag tag-sec">SECURITY</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <ul class="blist">
+          <li><strong>Cause:</strong> User is authenticated but has no role-collection assigned</li>
+          <li><strong>Fix:</strong> BTP Cockpit → Security → Role Collections → assign <code>Order Manager</code> or <code>Order Viewer</code> to the user</li>
+          <li><strong>Check:</strong> Decode JWT — look for <code>scope</code> array. Should contain <code>order-app!t123.OrderViewer</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-red">E3</div>
+      <div class="step-title">cds watch — "No model loaded" error</div>
+      <span class="step-tag tag-code">CODE</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <ul class="blist">
+          <li><strong>Cause:</strong> CDS syntax error in one of your <code>.cds</code> files</li>
+          <li><strong>Fix:</strong> Check terminal output for the exact file and line number. Common mistakes: missing semicolon, typo in entity name, wrong <code>using</code> path</li>
+          <li><strong>Debug:</strong> Run <code>cds compile db/ srv/ --to json</code> to see full error details</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-red">E4</div>
+      <div class="step-title">HANA deployment fails — SQL errors in cf logs</div>
+      <span class="step-tag tag-db">DATA</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <ul class="blist">
+          <li><strong>Check logs:</strong> <code>cf logs order-app-db-deployer --recent</code></li>
+          <li><strong>Common cause:</strong> Trying to change a column type or drop a column with data in it</li>
+          <li><strong>Fix for column rename:</strong> Create a new column, migrate data, then drop old — never rename directly</li>
+          <li><strong>Fix for type change:</strong> Same pattern — new column, migrate, drop old</li>
+          <li><strong>Nuclear option (dev only):</strong> <code>cf delete-service order-app-db</code> then redeploy — DESTROYS all data</li>
+        </ul>
+      </div>
+      <div class="callout c-danger">
+        <div class="callout-icon">🚨</div>
+        <div class="callout-text"><strong>Never run delete-service in production.</strong> It permanently deletes all tenant data in the HDI container with no recovery option.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header" onclick="tog(this)">
+      <div class="step-num-badge sn-red">E5</div>
+      <div class="step-title">Fiori Elements shows blank page / no data</div>
+      <span class="step-tag tag-ui">UI</span>
+      <span class="chevron">▶</span>
+    </div>
+    <div class="step-body">
+      <div class="block">
+        <ul class="blist">
+          <li><strong>Step 1:</strong> Open DevTools → Network → check if OData request is going to the right URL</li>
+          <li><strong>Step 2:</strong> Check if the OData service path in <code>manifest.json</code> matches the actual CAP service path</li>
+          <li><strong>Step 3:</strong> Press <code>Ctrl+Shift+Alt+P</code> in the Fiori app → UI5 Diagnostics → check model binding</li>
+          <li><strong>Step 4:</strong> Verify annotations compiled: <code>cds compile srv/ --to json | grep LineItem</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+</main>
+</div><!-- /app -->
+
+<script>
+function nav(id, btn) {
+  document.querySelectorAll('.sec').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const sec = document.getElementById('sec-' + id);
+  if (sec) { sec.classList.add('active'); document.querySelector('.main').scrollTo(0, 0); }
+  if (btn) btn.classList.add('active');
+}
+
+function tog(headerEl) {
+  const body = headerEl.nextElementSibling;
+  if (!body) return;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open');
+  // Rotate chevron
+  const chevron = headerEl.querySelector('.chevron');
+  if (chevron) chevron.style.transform = isOpen ? '' : 'rotate(90deg)';
+}
+
+// Open first card in each section automatically
+document.querySelectorAll('.sec').forEach(sec => {
+  const first = sec.querySelector('.step-header');
+  if (first) tog(first);
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape')
+    document.querySelectorAll('.step-body.open').forEach(b => {
+      b.classList.remove('open');
+      const chevron = b.previousElementSibling?.querySelector('.chevron');
+      if (chevron) chevron.style.transform = '';
+    });
+});
+</script>
+</body>
+</html>
